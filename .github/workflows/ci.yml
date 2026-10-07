@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Run shellcheck
-        run: shellcheck scripts/issue-comment.sh tests/mocks/gh
+        run: shellcheck skills/github-gsd/scripts/issue-comment.sh tests/mocks/gh
 
   test:
     strategy:
@@ -43,3 +43,27 @@ jobs:
           jq --version
       - name: Run tests
         run: bats tests/
+
+  install:
+    runs-on: ubuntu-latest
+    env:
+      DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check the skill's LICENSE copy
+        run: cmp LICENSE skills/github-gsd/LICENSE
+      - name: Install with the skills CLI
+        run: |
+          project="$RUNNER_TEMP/project"
+          mkdir -p "$project"
+          cd "$project"
+          npx --yes skills@1.7.1 add "$GITHUB_WORKSPACE" -a claude-code -a codex -y
+      - name: Check the installed files
+        run: |
+          skill="$RUNNER_TEMP/project/.agents/skills/github-gsd"
+          for path in SKILL.md LICENSE steps/start.md templates/config.md scripts/issue-comment.sh; do
+            test -f "$skill/$path" || { echo "missing: $path"; exit 1; }
+          done
+          test -x "$skill/scripts/issue-comment.sh"
+          test -f "$RUNNER_TEMP/project/.claude/skills/github-gsd/SKILL.md"
+          grep -qx 'name: github-gsd' "$skill/SKILL.md"

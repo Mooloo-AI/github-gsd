@@ -28,17 +28,17 @@ intake ─► start ─┬─► small path: change → checks → PR
 
 | Step | What the agent does |
 |---|---|
-| [Intake](steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or a tracking issue with sub-issues; sets labels, planning fields, and milestone. |
-| [Start](steps/start.md) | Picks a ready, unblocked issue, sets `Status` to In progress, creates `<type>/<issue>-<slug>`. |
-| [Small path](steps/small.md) | For a typo, config, or contained fix: implement, run checks, open the PR. No workflow comments. |
-| [Research](steps/research.md) | Optional. Writes a Research comment with findings, sources, and a recommendation. |
-| [Discuss](steps/discuss.md) | Settles open questions with the owner and writes the Context and decisions comment (D-01, D-02, …). Deferred items become new issues. |
-| [Plan](steps/plan.md) | Writes the Implementation plan comment: tasks, verification, risks. Adds an ADR when a decision has lasting impact. |
-| [Execute](steps/execute.md) | Commits with `Refs #N`, ticks plan tasks in place, and opens a sub-issue when scope grows. |
-| [Verify](steps/verify.md) | Runs the required checks, checks each acceptance criterion, and writes a Verification comment. |
-| [Ship](steps/ship.md) | Opens the PR with `Closes #N` and links to the comments, sets `Status` to In review. |
+| [Intake](skills/github-gsd/steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or a tracking issue with sub-issues; sets labels, planning fields, and milestone. |
+| [Start](skills/github-gsd/steps/start.md) | Picks a ready, unblocked issue, sets `Status` to In progress, creates `<type>/<issue>-<slug>`. |
+| [Small path](skills/github-gsd/steps/small.md) | For a typo, config, or contained fix: implement, run checks, open the PR. No workflow comments. |
+| [Research](skills/github-gsd/steps/research.md) | Optional. Writes a Research comment with findings, sources, and a recommendation. |
+| [Discuss](skills/github-gsd/steps/discuss.md) | Settles open questions with the owner and writes the Context and decisions comment (D-01, D-02, …). Deferred items become new issues. |
+| [Plan](skills/github-gsd/steps/plan.md) | Writes the Implementation plan comment: tasks, verification, risks. Adds an ADR when a decision has lasting impact. |
+| [Execute](skills/github-gsd/steps/execute.md) | Commits with `Refs #N`, ticks plan tasks in place, and opens a sub-issue when scope grows. |
+| [Verify](skills/github-gsd/steps/verify.md) | Runs the required checks, checks each acceptance criterion, and writes a Verification comment. |
+| [Ship](skills/github-gsd/steps/ship.md) | Opens the PR with `Closes #N` and links to the comments, sets `Status` to In review. |
 
-The agent writes the workflow comments directly, with no approval step; the owner edits them afterward if needed. The entry point for the agent is [SKILL.md](SKILL.md).
+The agent writes the workflow comments directly, with no approval step; the owner edits them afterward if needed. The entry point for the agent is [SKILL.md](skills/github-gsd/SKILL.md).
 
 ## Requirements
 
@@ -48,43 +48,50 @@ The agent writes the workflow comments directly, with no approval step; the owne
 
 ## Install
 
-The skill is this whole repository. Clone it into a skills directory named `github-gsd`.
-
-Don't name the directory with a `gsd-` prefix. GSD Core's install, update, and uninstall delete every `gsd-*` entry in the skills directory, whoever installed it. That's why this skill was renamed from `gsd-github`.
-
-### Claude Code
-
-For all your projects:
+The skill lives in [`skills/github-gsd/`](skills/github-gsd). Install it with the [skills.sh](https://skills.sh) CLI, which works for Claude Code, Codex, and other agents:
 
 ```bash
-git clone https://github.com/Mooloo-AI/github-gsd.git ~/.claude/skills/github-gsd
+npx skills add Mooloo-AI/github-gsd
 ```
 
-For one repository (shared with everyone who works on it):
+The CLI asks which agents to install for and whether to install for this project or globally. To skip the questions:
 
 ```bash
-git submodule add https://github.com/Mooloo-AI/github-gsd.git .claude/skills/github-gsd
+# This project only. Commit .agents/skills/ (and .claude/skills/) to share it with your team.
+npx skills add Mooloo-AI/github-gsd -a claude-code -a codex -y
+
+# All your projects
+npx skills add Mooloo-AI/github-gsd -g -a claude-code -a codex -y
 ```
 
-### Codex
+To update, run `npx skills update`.
 
-For all your projects:
+### Manual install
+
+Clone the repository anywhere and link the skill directory into your agent's skills directory:
 
 ```bash
-git clone https://github.com/Mooloo-AI/github-gsd.git ~/.agents/skills/github-gsd
+git clone https://github.com/Mooloo-AI/github-gsd.git ~/src/github-gsd
+ln -s ~/src/github-gsd/skills/github-gsd ~/.claude/skills/github-gsd   # Claude Code
+ln -s ~/src/github-gsd/skills/github-gsd ~/.agents/skills/github-gsd   # Codex
 ```
 
-For one repository:
+To update, run `git pull` in the clone.
+
+Whichever way you install it, keep the directory name `github-gsd`. Don't use a `gsd-` prefix: GSD Core's install, update, and uninstall delete every `gsd-*` entry in the skills directory, whoever installed it. That's why this skill was renamed from `gsd-github`.
+
+### Moving from an older install
+
+Before the skill moved to `skills/github-gsd/`, the install was a clone of the whole repository at `~/.claude/skills/github-gsd` (or `~/.agents/skills/github-gsd`). After a `git pull`, that clone no longer has a `SKILL.md` at its top level. Remove it and install again:
 
 ```bash
-git submodule add https://github.com/Mooloo-AI/github-gsd.git .agents/skills/github-gsd
+rm -rf ~/.claude/skills/github-gsd
+npx skills add Mooloo-AI/github-gsd -g -a claude-code -y
 ```
-
-To update, run `git pull` in the clone (or `git submodule update --remote`).
 
 ## Configure
 
-Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the Project owner and number, the `Status` option names, labels, planning fields, required checks, and branch naming. The format and defaults are in [templates/config.md](templates/config.md). For example:
+Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the Project owner and number, the `Status` option names, labels, planning fields, required checks, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
 
 ```markdown
 ## github-gsd configuration
@@ -117,7 +124,7 @@ In Claude Code you can also invoke it as `/github-gsd work on #42`.
 
 ## The comment helper
 
-[`scripts/issue-comment.sh`](scripts/issue-comment.sh) writes the marked comments:
+[`issue-comment.sh`](skills/github-gsd/scripts/issue-comment.sh) writes the marked comments:
 
 ```bash
 issue-comment.sh 42 context decisions.md               # create or update in place
@@ -137,7 +144,7 @@ issue-comment.sh --repo acme/widgets 42 plan plan.md   # another repository
 ## Develop
 
 ```bash
-shellcheck scripts/issue-comment.sh tests/mocks/gh
+shellcheck skills/github-gsd/scripts/issue-comment.sh tests/mocks/gh
 bats tests/
 ```
 
