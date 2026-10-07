@@ -197,6 +197,15 @@ payload_body() {
   [ "$output" = "<!-- workflow:verification --> new" ]
 }
 
+@test "--get prints the body exactly, so a round trip does not change it" {
+  pages "[$(comment 1 2026-01-01T00:00:00Z $'<!-- workflow:plan -->\n- [ ] task\n')]"
+  "$SCRIPT" --get 7 plan >"$BATS_TEST_TMPDIR/plan.md"
+  [ "$(od -c "$BATS_TEST_TMPDIR/plan.md" | tail -n 2 | head -n 1 | awk '{print $NF}')" = '\n' ]
+  run "$SCRIPT" 7 plan "$BATS_TEST_TMPDIR/plan.md"
+  [ "$status" -eq 0 ]
+  [ "$(jq .body "$MOCK_DIR/payload.json")" = '"<!-- workflow:plan -->\n- [ ] task\n"' ]
+}
+
 @test "--url prints the marked comment's URL" {
   pages "[$(comment 1 2026-01-01T00:00:00Z 'x'), $(comment 4 2026-01-02T00:00:00Z '<!-- workflow:context -->')]"
   run "$SCRIPT" --url 7 context

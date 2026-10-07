@@ -195,7 +195,7 @@ if [ "$mode" = "get" ] || [ "$mode" = "url" ]; then
     duplicate_error
   fi
   if [ "$mode" = "get" ]; then
-    jq -r '.[-1].body' "$tmpdir/matches.json"
+    jq -j '.[-1].body' "$tmpdir/matches.json"
   else
     jq -r '.[-1].html_url' "$tmpdir/matches.json"
   fi
