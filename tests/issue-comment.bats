@@ -235,6 +235,10 @@ payload_body() {
 @test "rejects invalid markers and issues" {
   run "$SCRIPT" 7 Plan - <<<"x"
   [ "$status" -eq 2 ]
+  LC_ALL=en_US.UTF-8 run "$SCRIPT" 7 pLAN - <<<"x"
+  [ "$status" -eq 2 ]
+  run "$SCRIPT" 7 9plan - <<<"x"
+  [ "$status" -eq 2 ]
   run "$SCRIPT" 7 'plan -->' - <<<"x"
   [ "$status" -eq 2 ]
   run "$SCRIPT" abc plan - <<<"x"

@@ -112,8 +112,9 @@ done
 if [ "$mode" = "get" ] || [ "$mode" = "url" ]; then
   [ ${#positional[@]} -eq 2 ] || usage_error "--$mode takes <issue> <marker>"
 else
-  [ ${#positional[@]} -ge 2 ] && [ ${#positional[@]} -le 3 ] ||
+  if [ ${#positional[@]} -lt 2 ] || [ ${#positional[@]} -gt 3 ]; then
     usage_error "expected <issue> <marker> [<file>|-]"
+  fi
 fi
 
 issue_arg=${positional[0]}
@@ -123,9 +124,12 @@ source_file=${positional[2]:--}
 command -v gh >/dev/null 2>&1 || die "gh is not installed"
 command -v jq >/dev/null 2>&1 || die "jq is not installed"
 
-# Marker name.
+# Marker name. Explicit character lists, not ranges such as [a-z], which match
+# uppercase letters in some locales.
+lower=abcdefghijklmnopqrstuvwxyz
+digits=0123456789
 case "$marker" in
-  *[!a-z0-9-]* | "" | -* | [0-9]*)
+  *[!$lower$digits-]* | "" | -* | [$digits]*)
     usage_error "invalid marker '$marker' (use lowercase letters, digits, and '-', starting with a letter)"
     ;;
 esac
@@ -151,7 +155,7 @@ case "$issue_arg" in
     ;;
 esac
 case "$issue" in
-  "" | *[!0-9]*) usage_error "invalid issue '$issue_arg'" ;;
+  "" | *[!$digits]*) usage_error "invalid issue '$issue_arg'" ;;
 esac
 
 if [ -z "$repo" ]; then
@@ -213,7 +217,7 @@ if ! grep -q '[^[:space:]]' "$tmpdir/body.md"; then
   die "the comment body is empty"
 fi
 
-other_markers=$(grep -o '<!-- workflow:[a-z0-9-]* -->' "$tmpdir/body.md" | grep -vxF "$marker_text" || true)
+other_markers=$(LC_ALL=C grep -o '<!-- workflow:[a-z0-9-]* -->' "$tmpdir/body.md" | grep -vxF "$marker_text" || true)
 if [ -n "$other_markers" ]; then
   die "the body carries another marker: $(echo "$other_markers" | head -n 1)"
 fi
