@@ -1,0 +1,26 @@
+name: Tracking issue
+description: Coordinate work that spans several issues. Attach the children as sub-issues.
+labels: ["tracking"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: The outcome this group of issues delivers.
+    validations:
+      required: true
+  - type: textarea
+    id: sub-issues
+    attributes:
+      label: Sub-issues
+      description: The planned children. Attach each one as a GitHub sub-issue.
+      value: |
+        - [ ] 
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Out of scope
+    validations:
+      required: false
