@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Run shellcheck
-        run: shellcheck scripts/issue-comment.sh tests/mocks/gh
+        run: shellcheck skills/github-gsd/scripts/issue-comment.sh tests/mocks/gh
 
   test:
     strategy:

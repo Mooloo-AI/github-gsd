@@ -1,10 +1,10 @@
 #!/usr/bin/env bats
-# Tests for scripts/issue-comment.sh with a mocked gh.
+# Tests for skills/github-gsd/scripts/issue-comment.sh with a mocked gh.
 
 bats_require_minimum_version 1.5.0
 
 setup() {
-  SCRIPT="$BATS_TEST_DIRNAME/../scripts/issue-comment.sh"
+  SCRIPT="$BATS_TEST_DIRNAME/../skills/github-gsd/scripts/issue-comment.sh"
   export MOCK_DIR="$BATS_TEST_TMPDIR/mock"
   mkdir -p "$MOCK_DIR"
   : >"$MOCK_DIR/calls.log"
