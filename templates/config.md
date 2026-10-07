@@ -1,4 +1,4 @@
-# gsd-github configuration
+# github-gsd configuration
 
 Copy this section into the repository's `AGENTS.md` (or `CLAUDE.md`) and edit
 the values. Leave a line out to use its default. Keep secrets out of it.
@@ -6,7 +6,7 @@ the values. Leave a line out to use its default. Keep secrets out of it.
 The values shown are the defaults.
 
 ```markdown
-## gsd-github configuration
+## github-gsd configuration
 
 - **Project:** owner `<org-or-user>`, number `<n>`
 - **Status field:** `Status`, with options Backlog → Ready → In progress → In review → Done
@@ -42,7 +42,7 @@ The values shown are the defaults.
 ## Example
 
 ```markdown
-## gsd-github configuration
+## github-gsd configuration
 
 - **Project:** owner `acme`, number `3`
 - **Status field:** `Status`, with options Todo → Ready → Doing → Review → Done
