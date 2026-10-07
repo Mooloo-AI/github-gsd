@@ -1,9 +1,9 @@
 ---
-name: gsd-github
+name: github-gsd
 description: Run a discuss → plan → execute → verify → ship workflow on GitHub Issues, Projects, and milestones, with no local planning files. Use when the user asks to file, scope, start, discuss, plan, implement, verify, or ship a GitHub issue ("work on #12", "plan issue 40", "turn this idea into an issue", "ship it") in a repository that tracks its work on GitHub. Do not use for repositories that keep plans in local files such as .planning/.
 ---
 
-# gsd-github
+# github-gsd
 
 GitHub is the only source of truth for planning. Do not create local planning
 files (`PLAN.md`, `STATE.md`, `.planning/`, and so on).
@@ -55,7 +55,7 @@ merge them by hand (or ask the owner) before going on. Run the script with
 
 ## Configuration
 
-Before acting, read the repository's settings from the **gsd-github
+Before acting, read the repository's settings from the **github-gsd
 configuration** section of `AGENTS.md` (or `CLAUDE.md`). The section format
 is in [templates/config.md](templates/config.md). It sets:
 
