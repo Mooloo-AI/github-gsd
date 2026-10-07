@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Mock gh for the issue-comment.sh tests.
+#
+# Environment:
+#   MOCK_DIR            directory for logs and fixtures (required)
+#   MOCK_REPO           repository returned by `gh repo view` (default: acme/widgets)
+#   $MOCK_DIR/pages.json  output of the comment list call (concatenated pages)
+#   MOCK_FAIL           a call kind to fail: list, create, update, or repo
+#
+# Writes:
+#   $MOCK_DIR/calls.log      one line per call with its arguments
+#   $MOCK_DIR/payload.json   the --input payload of the last create/update call
+
+set -euo pipefail
+
+echo "$*" >>"$MOCK_DIR/calls.log"
+
+fail_if() {
+  if [ "${MOCK_FAIL:-}" = "$1" ]; then
+    echo "mock gh: $1 failed" >&2
+    exit 1
+  fi
+}
+
+if [ "${1:-}" = "repo" ] && [ "${2:-}" = "view" ]; then
+  fail_if repo
+  echo "${MOCK_REPO:-acme/widgets}"
+  exit 0
+fi
+
+[ "${1:-}" = "api" ] || { echo "mock gh: unsupported command: $*" >&2; exit 64; }
+shift
+
+method=GET
+input=""
+endpoint=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --method | -X) method=$2; shift 2 ;;
+    --input) input=$2; shift 2 ;;
+    --jq | -q) shift 2 ;;
+    --paginate) shift ;;
+    -*) echo "mock gh: unsupported flag: $1" >&2; exit 64 ;;
+    *) endpoint=$1; shift ;;
+  esac
+done
+
+case "$method $endpoint" in
+  "GET repos/"*"/issues/"*"/comments?per_page=100")
+    fail_if list
+    cat "$MOCK_DIR/pages.json"
+    ;;
+  "POST repos/"*"/issues/"*"/comments")
+    fail_if create
+    cp "$input" "$MOCK_DIR/payload.json"
+    repo_issue=${endpoint#repos/}
+    repo_issue=${repo_issue%/comments}
+    echo "https://github.com/${repo_issue}#issuecomment-999"
+    ;;
+  "PATCH repos/"*"/issues/comments/"*)
+    fail_if update
+    cp "$input" "$MOCK_DIR/payload.json"
+    echo "https://github.com/updated#issuecomment-${endpoint##*/}"
+    ;;
+  *)
+    echo "mock gh: unsupported call: $method $endpoint" >&2
+    exit 64
+    ;;
+esac
