@@ -150,6 +150,10 @@ bats tests/
 
 The tests use a mocked `gh` ([tests/mocks/gh](tests/mocks/gh)) and need [bats-core](https://github.com/bats-core/bats-core) 1.5 or later. CI runs them on Linux and on macOS with the system bash 3.2.
 
+### Releases
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org). On every push to `main`, [release-please](https://github.com/googleapis/release-please) updates a release pull request; merging it bumps [VERSION](VERSION), adds the changes to [CHANGELOG.md](CHANGELOG.md), tags `vX.Y.Z`, and creates a GitHub Release. Installs follow `main`, so a release records what changed and doesn't gate what users get.
+
 ## Credit and affiliation
 
 This project adapts the workflow ideas of [GSD Core](https://github.com/open-gsd/gsd-core) ("Get Shit Done") to a GitHub-native setup. **It is not affiliated with, endorsed by, or maintained by open-gsd or the GSD Core authors.** GSD Core is MIT-licensed; any adapted text keeps its copyright notice.
