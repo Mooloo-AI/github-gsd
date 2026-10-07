@@ -1,0 +1,42 @@
+name: Task
+description: Scoped, executable work with acceptance criteria.
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: The outcome and who it is for.
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements
+      description: What must be true when this is done. One requirement per bullet.
+      value: |
+        - 
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Checkable statements. Each one is checked during Verify.
+      value: |
+        - [ ] 
+    validations:
+      required: true
+  - type: textarea
+    id: open-questions
+    attributes:
+      label: Open questions
+      description: Questions to settle in Discuss. Write "None" if there are none.
+    validations:
+      required: false
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Links, background, related issues, out-of-scope items.
+    validations:
+      required: false
