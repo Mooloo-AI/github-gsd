@@ -12,18 +12,12 @@ setup() {
 }
 
 @test "the description is single-quoted, so ' #' does not start a YAML comment" {
-  # case, not [[ ]]: bash 3.2 ignores a failing [[ ]] that is not last.
   line=$(grep '^description: ' "$SKILL_MD")
-  case "$line" in
-    "description: '"*"'") ;;
-    *) echo "not single-quoted: $line"; return 1 ;;
-  esac
+  [[ "$line" == "description: '"*"'" ]] || return 1
   # Inside single quotes only '' is special; the text has no quote to escape.
   inner=${line#description: \'}
   inner=${inner%\'}
-  case "$inner" in
-    *"'"*) echo "unescaped quote in: $inner"; return 1 ;;
-  esac
+  [[ "$inner" != *"'"* ]] || return 1
 }
 
 @test "the description keeps its trigger for unannounced change requests" {
