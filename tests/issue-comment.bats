@@ -32,7 +32,7 @@ payload_body() {
 @test "--help prints usage" {
   run "$SCRIPT" --help
   [ "$status" -eq 0 ]
-  [[ "$output" == *"Usage:"* ]]
+  [[ "$output" == *"Usage:"* ]] || return 1
 }
 
 @test "creates the comment when none carries the marker" {
@@ -48,7 +48,7 @@ payload_body() {
   run --separate-stderr "$SCRIPT" 7 plan - <<<"body"
   [ "$status" -eq 0 ]
   [ "$output" = "https://github.com/acme/widgets/issues/7#issuecomment-999" ]
-  [[ "$stderr" == *"created a plan comment on acme/widgets#7"* ]]
+  [[ "$stderr" == *"created a plan comment on acme/widgets#7"* ]] || return 1
 }
 
 @test "updates the single marked comment in place" {
@@ -57,7 +57,7 @@ payload_body() {
   [ "$status" -eq 0 ]
   [ "$output" = "https://github.com/updated#issuecomment-42" ]
   grep -q '^api --method PATCH repos/acme/widgets/issues/comments/42' "$MOCK_DIR/calls.log"
-  ! grep -q 'POST' "$MOCK_DIR/calls.log"
+  ! grep -q 'POST' "$MOCK_DIR/calls.log" || return 1
   [ "$(payload_body)" = $'<!-- workflow:context -->\nnew decisions' ]
 }
 
@@ -77,10 +77,10 @@ payload_body() {
     "[$(comment 11 2026-01-02T00:00:00Z '<!-- workflow:plan --> two')]"
   run "$SCRIPT" 7 plan - <<<"new plan"
   [ "$status" -eq 3 ]
-  [[ "$output" == *"2 comments on acme/widgets#7 carry <!-- workflow:plan -->"* ]]
-  [[ "$output" == *"issuecomment-10"* ]]
-  [[ "$output" == *"issuecomment-11"* ]]
-  ! grep -qE 'PATCH|POST' "$MOCK_DIR/calls.log"
+  [[ "$output" == *"2 comments on acme/widgets#7 carry <!-- workflow:plan -->"* ]] || return 1
+  [[ "$output" == *"issuecomment-10"* ]] || return 1
+  [[ "$output" == *"issuecomment-11"* ]] || return 1
+  ! grep -qE 'PATCH|POST' "$MOCK_DIR/calls.log" || return 1
 }
 
 @test "does not match a different marker" {
@@ -95,7 +95,7 @@ payload_body() {
   run "$SCRIPT" --append 7 verification - <<<"second run"
   [ "$status" -eq 0 ]
   grep -q 'POST repos/acme/widgets/issues/7/comments' "$MOCK_DIR/calls.log"
-  ! grep -q 'PATCH' "$MOCK_DIR/calls.log"
+  ! grep -q 'PATCH' "$MOCK_DIR/calls.log" || return 1
   [ "$(payload_body)" = $'<!-- workflow:verification -->\nsecond run' ]
 }
 
@@ -109,7 +109,7 @@ payload_body() {
 @test "--append is refused for the context and plan comments" {
   run "$SCRIPT" --append 7 context - <<<"x"
   [ "$status" -eq 2 ]
-  [[ "$output" == *"edited in place"* ]]
+  [[ "$output" == *"edited in place"* ]] || return 1
   run "$SCRIPT" --append 7 plan - <<<"x"
   [ "$status" -eq 2 ]
   [ ! -s "$MOCK_DIR/calls.log" ]
@@ -138,27 +138,27 @@ payload_body() {
 @test "rejects a body that carries another workflow marker" {
   run "$SCRIPT" 7 plan - <<<$'<!-- workflow:context -->\nwrong'
   [ "$status" -eq 1 ]
-  [[ "$output" == *"another marker: <!-- workflow:context -->"* ]]
-  ! grep -qE 'PATCH|POST' "$MOCK_DIR/calls.log"
+  [[ "$output" == *"another marker: <!-- workflow:context -->"* ]] || return 1
+  ! grep -qE 'PATCH|POST' "$MOCK_DIR/calls.log" || return 1
 }
 
 @test "rejects an empty body" {
   run "$SCRIPT" 7 plan - <<<$'  \n\t'
   [ "$status" -eq 1 ]
-  [[ "$output" == *"empty"* ]]
+  [[ "$output" == *"empty"* ]] || return 1
 }
 
 @test "rejects a missing body file" {
   run "$SCRIPT" 7 plan "$BATS_TEST_TMPDIR/missing.md"
   [ "$status" -eq 1 ]
-  [[ "$output" == *"no such file"* ]]
+  [[ "$output" == *"no such file"* ]] || return 1
 }
 
 @test "accepts an issue URL and takes the repository from it" {
   run "$SCRIPT" https://github.com/other/repo/issues/12 plan - <<<"x"
   [ "$status" -eq 0 ]
   grep -q 'repos/other/repo/issues/12/comments' "$MOCK_DIR/calls.log"
-  ! grep -q 'repo view' "$MOCK_DIR/calls.log"
+  ! grep -q 'repo view' "$MOCK_DIR/calls.log" || return 1
 }
 
 @test "rejects --repo that does not match the issue URL" {
@@ -229,7 +229,7 @@ payload_body() {
 @test "--get fails when no comment carries the marker" {
   run "$SCRIPT" --get 7 context
   [ "$status" -eq 1 ]
-  [[ "$output" == *"no comment"* ]]
+  [[ "$output" == *"no comment"* ]] || return 1
 }
 
 @test "rejects invalid markers and issues" {
@@ -254,18 +254,18 @@ payload_body() {
 @test "reports gh failures" {
   MOCK_FAIL=list run "$SCRIPT" 7 plan - <<<"x"
   [ "$status" -eq 1 ]
-  [[ "$output" == *"cannot list comments on acme/widgets#7"* ]]
+  [[ "$output" == *"cannot list comments on acme/widgets#7"* ]] || return 1
 
   MOCK_FAIL=create run "$SCRIPT" 7 plan - <<<"x"
   [ "$status" -eq 1 ]
-  [[ "$output" == *"cannot create a comment"* ]]
+  [[ "$output" == *"cannot create a comment"* ]] || return 1
 
   pages "[$(comment 9 2026-01-01T00:00:00Z '<!-- workflow:plan -->')]"
   MOCK_FAIL=update run "$SCRIPT" 7 plan - <<<"x"
   [ "$status" -eq 1 ]
-  [[ "$output" == *"cannot update comment 9"* ]]
+  [[ "$output" == *"cannot update comment 9"* ]] || return 1
 
   MOCK_FAIL=repo run "$SCRIPT" 7 plan - <<<"x"
   [ "$status" -eq 1 ]
-  [[ "$output" == *"pass --repo"* ]]
+  [[ "$output" == *"pass --repo"* ]] || return 1
 }
