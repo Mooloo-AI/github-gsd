@@ -18,6 +18,7 @@ The values shown are the defaults.
 - **Branch naming:** `<type>/<issue>-<slug>`, where type is the Conventional Commits type
 - **Commit messages:** Conventional Commits with a `Refs #<issue>` footer
 - **Required checks:** none configured; ask the owner
+- **PR size limit:** 1500 changed lines (additions + deletions)
 - **Workflow checks:** none
 - **ADR directory:** `docs/adr/`
 - **PR template:** `.github/pull_request_template.md` if present
@@ -37,6 +38,7 @@ The values shown are the defaults.
 | Branch naming | Pattern for work branches. |
 | Commit messages | Commit convention. |
 | Required checks | Commands that must pass before a PR, for example `npm test` and `npm run build`. |
+| PR size limit | The most lines (additions plus deletions) one pull request may change, against the default branch. Lockfiles and generated files do not count. Planned in the plan step and checked in verify; work that is larger is split into sub-issues. |
 | Workflow checks | Extra checks for some kinds of change, for example `actionlint` for workflow files or a deployment dry run for infrastructure changes. |
 | ADR directory | Where Architecture Decision Records live. |
 | PR template | The pull request template to fill in. |

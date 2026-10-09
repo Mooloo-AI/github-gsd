@@ -102,7 +102,8 @@ is in [templates/config.md](templates/config.md). It sets:
 - the Project owner and number, the `Status` field and its option names;
 - planning fields (priority, effort, dates) and how to set them;
 - labels (type and area labels);
-- the required checks, branch naming, ADR directory, and milestone usage.
+- the required checks, PR size limit, branch naming, ADR directory, and
+  milestone usage.
 
 If there is no such section, use the defaults in
 [templates/config.md](templates/config.md), say which defaults you used, and
@@ -144,8 +145,15 @@ for only one step.
 
 ## Rules for every step
 
-- **One issue, one branch, one PR.** If scope grows, stop and open a sub-issue
-  instead of expanding the current issue silently.
+- **One issue, one branch, one PR, and keep the PR small**, so a reviewer can
+  review it well. A small PR covers one reviewable concern that a reviewer can
+  read in one sitting, and its additions plus deletions stay within the
+  configured PR size limit (default 1500 lines). Plan the size up front
+  ([steps/plan.md](steps/plan.md#3-check-the-size)). Split work that is too
+  large into a tracking issue whose sub-issues are ordered, independently
+  shippable slices, each with its own branch and PR. If scope grows during the
+  work, stop and open a sub-issue instead of expanding the current issue
+  silently.
 - **Record follow-up work as an issue** (or a draft item if it is not scoped),
   never as a `TODO` comment in code.
 - **Keep the issue body current.** When requirements or acceptance criteria
