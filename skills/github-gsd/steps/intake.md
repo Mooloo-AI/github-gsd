@@ -77,3 +77,7 @@ milestone, put the parent and every child in that milestone.
 
 The item exists, has its labels and planning fields, is on the Project, and
 you have given the user its URL.
+
+If the user asked for the change itself ("add …", "fix …") and not only to
+record it, do not stop here: continue with [start.md](start.md) and the rest
+of the workflow. Change no file before the issue branch exists.

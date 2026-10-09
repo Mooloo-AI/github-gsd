@@ -8,6 +8,7 @@ The values shown are the defaults.
 ```markdown
 ## github-gsd configuration
 
+- **Workflow:** use the github-gsd skill for every change: file or pick an issue and create its branch before changing any file
 - **Project:** owner `<org-or-user>`, number `<n>`
 - **Status field:** `Status`, with options Backlog → Ready → In progress → In review → Done
 - **Planning fields:** none
@@ -26,6 +27,7 @@ The values shown are the defaults.
 
 | Setting | Meaning |
 |---|---|
+| Workflow | The rule every agent in the repository follows, including agents that do not load the skill on their own. Keep this line even when you leave others out. |
 | Project | The GitHub Project (v2) that holds the board. No default: without it, skip Project updates and say so. |
 | Status field | The single-select field for the workflow state and the names of its five options in order: not ready, ready, in progress, in review, done. If a repository uses other names, map them here. |
 | Planning fields | Fields to set at intake, for example `Priority` and `Effort` as Project fields or organization issue fields, and how to set them. A free-form description, including the command to use, is fine. |
@@ -44,6 +46,7 @@ The values shown are the defaults.
 ```markdown
 ## github-gsd configuration
 
+- **Workflow:** use the github-gsd skill for every change: file or pick an issue and create its branch before changing any file
 - **Project:** owner `acme`, number `3`
 - **Status field:** `Status`, with options Todo → Ready → Doing → Review → Done
 - **Planning fields:** organization issue fields `Priority` (Urgent, High, Medium, Low)

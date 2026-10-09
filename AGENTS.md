@@ -2,6 +2,7 @@
 
 ## github-gsd configuration
 
+- **Workflow:** use the github-gsd skill for every change: file or pick an issue and create its branch before changing any file
 - **Project:** none. This repository has no GitHub Project: skip Project and `Status` updates, and track work with issues, labels, and pull requests.
 - **Status field:** none (no Project)
 - **Planning fields:** none

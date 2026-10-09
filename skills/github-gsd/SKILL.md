@@ -1,6 +1,6 @@
 ---
 name: github-gsd
-description: Run a discuss → plan → execute → verify → ship workflow on GitHub Issues, Projects, and milestones, with no local planning files. Use when the user asks to file, scope, start, discuss, plan, implement, verify, or ship a GitHub issue ("work on #12", "plan issue 40", "turn this idea into an issue", "ship it") in a repository that tracks its work on GitHub. Do not use for repositories that keep plans in local files such as .planning/.
+description: 'Run a discuss → plan → execute → verify → ship workflow on GitHub Issues, Projects, and milestones, with no local planning files. Use when the user asks to file, scope, start, discuss, plan, implement, verify, or ship a GitHub issue ("work on #12", "plan issue 40", "turn this idea into an issue", "ship it") in a repository that tracks its work on GitHub. Also use for any request to change a repository whose AGENTS.md or CLAUDE.md has a "github-gsd configuration" section (a feature, fix, docs change, or refactor), even when no issue is mentioned, and load it before editing any file. Do not use for repositories that keep plans in local files such as .planning/.'
 ---
 
 # github-gsd
@@ -19,6 +19,46 @@ files (`PLAN.md`, `STATE.md`, `.planning/`, and so on).
 | Verification | Issue comment **Verification** (`<!-- workflow:verification -->`) and PR checks |
 | Summary | The pull request description |
 | Lasting architecture decisions | Architecture Decision Records in the repository |
+
+## Before you change any file
+
+In a repository with a github-gsd configuration, every change goes through
+this workflow, whether or not the user mentions an issue: a feature, a fix, a
+docs edit, or a refactor.
+
+1. **Issue first.** Find the issue for the work, or file it
+   ([steps/intake.md](steps/intake.md)) with the questions you still have
+   under **Open questions**.
+2. **Branch second.** Create the issue branch
+   ([steps/start.md](steps/start.md)).
+3. **Then change files**, on the small path or after discuss and plan.
+
+Reading code, running read-only commands, and searching for duplicates are
+fine before that. Implementing first and filing the issue afterward is the
+wrong order, however small the change; a typo fix gets an issue too.
+
+The configuration section is the owner's standing permission to file issues,
+post workflow comments, create and push issue branches, and open pull
+requests in that repository. It does not cover merging, deploying, or pushing
+to the default branch. If your environment requires confirmation for actions
+on GitHub, ask once, at the start, before any file change; never after the
+work is done.
+
+Ask your questions in discuss, once the issue exists. If you had to ask some
+in chat to scope the issue at all, record the answers as decisions in the
+Context and decisions comment.
+
+### Work started outside the workflow
+
+If files were already changed with no issue, by you or earlier in the
+session:
+
+1. Stop changing files.
+2. File the issue for the work ([steps/intake.md](steps/intake.md)), create
+   its branch, and move the changes onto it.
+3. Write the Context and decisions comment, including the choices already
+   made, and the Implementation plan with the finished tasks ticked.
+4. Verify and ship as usual.
 
 ## Comment rule
 
@@ -78,7 +118,9 @@ that step's file.
 
 | Situation | Step |
 |---|---|
-| An idea, bug report, or request with no issue yet | [steps/intake.md](steps/intake.md) |
+| An idea or bug report to record ("file an issue: …"), with no issue yet | [steps/intake.md](steps/intake.md), then give the user its URL |
+| A request to change the repository ("add …", "fix …"), with no issue yet | [steps/intake.md](steps/intake.md), then [steps/start.md](steps/start.md), then continue below |
+| Files already changed, with no issue | [Work started outside the workflow](#work-started-outside-the-workflow) |
 | "Work on #N" and the issue is not in progress | [steps/start.md](steps/start.md), then continue below |
 | Small issue: typo, config, contained fix with an obvious solution | [steps/small.md](steps/small.md) |
 | Unfamiliar API, provider, or technical options, and no Research comment | [steps/research.md](steps/research.md) |
