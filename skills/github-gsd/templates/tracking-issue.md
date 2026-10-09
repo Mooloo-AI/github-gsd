@@ -4,10 +4,12 @@
 
 ## Sub-issues
 
-Attached as GitHub sub-issues. Planned:
+Attached as GitHub sub-issues. Each is an independently shippable slice with
+its own acceptance criteria and one PR. Listed in order; a slice that needs
+an earlier one is linked to it with blocked-by.
 
-- [ ] <child outcome> (#<issue> once created)
-- [ ] <…>
+- [ ] 1. <child outcome> (#<issue> once created)
+- [ ] 2. <…>
 
 ## Out of scope
 

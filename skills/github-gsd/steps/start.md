@@ -19,8 +19,10 @@ Before starting, check that:
   in the right repository;
 - no open issue blocks it (`blockedBy` is empty or all closed). If one does,
   tell the user and stop, or start the blocker instead if they agree;
-- it is not a tracking issue. For a tracking issue, start one of its
-  sub-issues.
+- it is not a tracking issue. A tracking issue's sub-issues are ordered,
+  independently shippable slices, each with its own branch and PR: start the
+  first open one that no open issue blocks (its blocked-by links set the
+  order).
 
 If the issue is not scoped, go to [intake.md](intake.md) first.
 

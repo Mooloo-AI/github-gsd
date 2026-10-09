@@ -1,5 +1,5 @@
 name: Tracking issue
-description: Coordinate work that spans several issues. Attach the children as sub-issues.
+description: Coordinate work too large for one small PR. Attach the children as sub-issues.
 labels: ["tracking"]
 body:
   - type: textarea
@@ -13,7 +13,7 @@ body:
     id: sub-issues
     attributes:
       label: Sub-issues
-      description: The planned children. Attach each one as a GitHub sub-issue.
+      description: The planned children, in order. Each is an independently shippable slice with one PR. Attach each as a GitHub sub-issue and link dependent ones with blocked-by.
       value: |
         - [ ] 
     validations:
