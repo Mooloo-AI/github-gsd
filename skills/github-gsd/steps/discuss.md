@@ -18,6 +18,9 @@ List every open question: the ones in the issue body and the ones you found
 
 - Answer what the code, docs, or existing decisions already answer. Record
   the source.
+- Record every question the owner already answered in chat, before or after
+  the issue was filed, as a decision with the date. An answer that lives only
+  in the chat is lost to the next reader.
 - Ask the owner the rest, in one batch, each with options and your
   recommendation. Wait for the answers. Do not ask about things with a
   conventional default; choose it and record it as a decision.
