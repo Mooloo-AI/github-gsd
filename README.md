@@ -91,11 +91,12 @@ npx skills add Mooloo-AI/github-gsd -g -a claude-code -y
 
 ## Configure
 
-Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the Project owner and number, the `Status` option names, labels, planning fields, required checks, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
+Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
 
 ```markdown
 ## github-gsd configuration
 
+- **Workflow:** use the github-gsd skill for every change: file or pick an issue and create its branch before changing any file
 - **Project:** owner `acme`, number `3`
 - **Status field:** `Status`, with options Backlog → Ready → In progress → In review → Done
 - **Area labels:** `area: api`, `area: web`
