@@ -151,6 +151,8 @@ bats tests/
 
 The tests use a mocked `gh` ([tests/mocks/gh](tests/mocks/gh)) and need [bats-core](https://github.com/bats-core/bats-core) 1.5 or later. CI runs them on Linux and on macOS with the system bash 3.2.
 
+End every `[[ ]]`, `(( ))`, and `! …` assertion in a test with `|| return 1`: bash 3.2 ignores such a check when it fails and is not the test's last command, and every bash ignores a failing `!` command. [`tests/style.bats`](tests/style.bats) enforces it.
+
 ### Releases
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org). On every push to `main`, [release-please](https://github.com/googleapis/release-please) updates a release pull request; merging it bumps [VERSION](VERSION), adds the changes to [CHANGELOG.md](CHANGELOG.md), tags `vX.Y.Z`, and creates a GitHub Release. Installs follow `main`, so a release records what changed and doesn't gate what users get.
