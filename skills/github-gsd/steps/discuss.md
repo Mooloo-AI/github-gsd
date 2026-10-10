@@ -7,55 +7,50 @@ decisions** comment, the single source for what was decided.
 
 - Read the issue body, all comments (including any Research comment), linked
   issues and PRs, and the parent tracking issue.
-- Read the code, docs, and ADRs the work touches. Note the files and modules.
-- If a Context and decisions comment already exists, start from it:
+- Read the code, docs, and ADRs the work touches, and note the files and
+  modules.
+- Start from an existing Context and decisions comment, if any:
   `issue-comment.sh --get <N> context`.
 
 ## 2. Settle the open questions
 
-List every open question: the ones in the issue body and the ones you found
-(gray areas, edge cases, behavior the requirements do not cover).
+List every open question: those in the issue body and those you found (gray
+areas, edge cases, behavior the requirements do not cover).
 
-- Answer what the code, docs, or existing decisions already answer. Record
-  the source.
-- Record every question the owner already answered in chat, before or after
-  the issue was filed, as a decision with the date. An answer that lives only
-  in the chat is lost to the next reader.
-- Ask the owner the rest, in one batch, each with options and your
-  recommendation. Wait for the answers. Do not ask about things with a
-  conventional default; choose it and record it as a decision.
+- Answer what the code, docs, or existing decisions already answer, and
+  record the source.
+- Record every answer the owner gave in chat, before or after the issue was
+  filed, as a dated decision; an answer left only in chat is lost.
+- Ask the owner the rest in one batch, each with options and your
+  recommendation, and wait for the answers. For things with a conventional
+  default, choose it and record it as a decision instead of asking.
 - If the owner is not available and the user asked you to go on, take your
-  recommendation and mark the decision "(proposed)" so it is easy to review.
+  recommendation and mark the decision "(proposed)".
 
 ## 3. Write the Context and decisions comment
 
 Use [templates/context.md](../templates/context.md):
 
-- **Decisions**, numbered `D-01`, `D-02`, … Each is one locked statement, with
-  the reason when it is not obvious. Keep numbers stable: when a decision
-  changes, edit it in place and note the date; do not renumber.
+- **Decisions**, numbered `D-01`, `D-02`, …: each one locked statement, with
+  the reason when it is not obvious. When a decision changes, edit it in
+  place and note the date; never renumber.
 - **Constraints** that bind the implementation.
 - **References**: code paths, docs, ADRs, issues, and PRs.
-- **Deferred**: what is out of scope, each with a link to its issue or draft
-  item.
+- **Deferred**: what is out of scope, each linked to its issue or draft item.
 
 ```bash
 issue-comment.sh <N> context context.md
 ```
 
-There is exactly one Context and decisions comment per issue. Always edit it
-with the script; never post a second one or a correction comment. Write it
-directly; there is no approval step.
-
 ## 4. Follow up
 
-- **Deferred items:** create an issue (or a draft item if it is not scoped)
-  for each one, following [intake.md](intake.md), and link it in the comment.
+- **Deferred items:** file an issue (or a draft item if unscoped) for each,
+  as in [intake.md](intake.md), and link it in the comment.
 - **Issue body:** if the decisions change the requirements or acceptance
   criteria, edit the body (`gh issue edit <N> --body-file body.md`) and move
   answered questions out of **Open questions**.
-- **Architecture:** if a decision matters beyond this issue, note "ADR needed"
-  next to it; the ADR is written in [plan.md](plan.md).
+- **Architecture:** mark a decision that matters beyond this issue "ADR
+  needed"; [plan.md](plan.md) writes the ADR.
 
 ## 5. Continue
 

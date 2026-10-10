@@ -5,17 +5,10 @@ Implement the plan task by task on the issue branch.
 ## For each task
 
 1. Implement it, following the decisions and the code's existing patterns.
-2. Run the checks that cover it (the relevant tests at least).
-3. Commit with the repository's convention (Conventional Commits by default)
-   and a `Refs #N` footer:
-
-   ```text
-   feat(export): add CSV writer for invoices
-
-   Refs #42
-   ```
-
-4. Tick the task in the plan comment:
+2. Run the checks that cover it (at least the relevant tests).
+3. Commit with a `Refs #N` footer.
+4. Tick the task in the plan comment as soon as it is done, not all at the
+   end:
 
    ```bash
    issue-comment.sh --get <N> plan > plan.md
@@ -23,11 +16,7 @@ Implement the plan task by task on the issue branch.
    issue-comment.sh <N> plan plan.md
    ```
 
-   Tick tasks as they are done, not all at the end, so the issue shows
-   progress.
-
-Commit and push regularly (`git push -u origin <branch>`) so the work is not
-only local.
+Push regularly (`git push -u origin <branch>`) so the work is not only local.
 
 ## When reality differs from the plan
 
@@ -35,17 +24,16 @@ only local.
   plan comment and go on.
 - **A decision turns out wrong or a new question comes up:** stop, go back to
   [discuss.md](discuss.md), update the Context and decisions comment, then
-  update the plan.
-- **Scope grows** (new behavior, a separate bug, a refactor the task does not
-  need): do not expand the issue silently. Open a sub-issue
-  (`gh issue create … --parent <N>`) or a separate issue, link it from the
-  plan, and leave it out of this branch unless it blocks the work.
-- **The work outgrows one small PR** (the size rule in `SKILL.md`): stop,
-  finish the slice that already works, and move the rest to sub-issues as in
+  the plan.
+- **Scope grows** (new behavior, a separate bug, an unneeded refactor): open a
+  sub-issue (`gh issue create … --parent <N>`) or a separate issue, link it
+  from the plan, and keep it off this branch unless it blocks the work.
+- **The work outgrows one small PR:** stop, finish the slice that already
+  works, and move the rest to sub-issues as in
   [plan.md](plan.md#3-check-the-size), shrinking this issue's plan and
   acceptance criteria to match.
 - **You are blocked** (missing access, failing infrastructure, an owner
-  decision): say so to the user and record the blocker in an issue comment.
+  decision): tell the user and record the blocker in an issue comment.
 
 ## Continue
 
