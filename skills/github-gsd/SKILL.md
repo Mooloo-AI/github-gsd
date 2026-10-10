@@ -82,9 +82,7 @@ Exit status 3 means duplicates of a one-per-issue comment: merge them by hand
 ## Configuration
 
 Before acting, read the **github-gsd configuration** section of `AGENTS.md`
-(or `CLAUDE.md`): the Project and its `Status` options, planning fields,
-labels, required checks, PR size limit, branch naming, ADR directory, and
-milestones. Without one, use the defaults in
+(or `CLAUDE.md`). Without one, use the defaults in
 [templates/config.md](templates/config.md), say which you used, and offer to
 add the section. Never guess a Project number: run
 `gh project list --owner <owner>` and ask if it is unclear.

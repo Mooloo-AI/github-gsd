@@ -48,8 +48,8 @@ Then:
 
 1. Add it to the Project:
    `gh project item-add <project> --owner <owner> --url <issue-url>`.
-2. Set the configured planning fields (for example Priority and Effort) by
-   command; issue templates cannot set them.
+2. Set the configured planning fields by command; issue templates cannot
+   set them.
 3. Set `Status` to the ready option if the issue is scoped and unblocked,
    otherwise leave the first option ([start.md](start.md) has the command).
 4. Add any blocker you did not pass with `--blocked-by`:
