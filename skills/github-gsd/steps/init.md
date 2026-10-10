@@ -37,9 +37,9 @@ Build each setting from the output:
 | Setting | From |
 |---|---|
 | Workflow | The standard line in [templates/config.md](../templates/config.md), always |
-| Project | The one Project with `linked: true`. With several linked, or none linked but some open, ask; never guess. With no Project, `none` |
+| Project | The one Project with `linked: true`. With several linked, or none linked but some open, ask; never guess. With none that fits, offer to create one (step 4); if the owner declines, `none` |
 | Status field | The chosen Project's `Status` single-select field. Map its options in order to not ready, ready, in progress, in review, done; ask if the count or meaning is unclear |
-| Planning fields | The Project's other single-select fields that have options (for example `Priority`, `Effort`), set with `gh project item-edit`. Discovery does not see organization issue fields: if a field has no options, or the owner may use issue fields, ask how planning fields are set. Otherwise `none` |
+| Planning fields | For an organization, its single-select `issue_fields` (for example `Priority`, `Effort`) with their options, set with the `setIssueFieldValue` GraphQL mutation. Otherwise the Project's other single-select fields that have options, set with `gh project item-edit`. Ask if unclear; with neither, `none` |
 | Type labels | `labels` that name a kind of work (`bug`, `enhancement`, `documentation`, `tracking`, …) |
 | Area labels | `labels` with an area prefix (`area:`, `component:`, `product:`, `team:`, …); otherwise `none` |
 | Triage label | An existing label for unscoped reports, otherwise `needs-triage` |
@@ -57,10 +57,18 @@ complete on its own.
 ## 3. Ask once
 
 Ask the owner in one batch, each question with your recommendation: the
-Project when it is not clear, any value discovery could not settle, and the
-optional setup in step 5. Then wait for the answers.
+Project when it is not clear (or whether to create one, its title defaulting
+to the repository name), any value discovery could not settle, and the
+optional setup in step 6. Then wait for the answers.
 
-## 4. Write the section
+## 4. Create a Project
+
+Only when no Project fits and the owner agreed: follow
+[init-project.md](init-project.md). It creates and links the Project, sets
+its five `Status` options, and adds the planning fields Priority and Effort
+(organization issue fields for an organization, Project fields for a user).
+
+## 5. Write the section
 
 Create the branch from the up-to-date default branch:
 
@@ -88,7 +96,7 @@ Pick the file: the one in `agent_files` with `has_config: true`; otherwise
 
 Nothing outside the section changes. Check with `git diff`.
 
-## 5. Optional setup
+## 6. Optional setup
 
 Offer each one, and do it only if the owner agreed in step 3. Never overwrite
 an existing file or label.
@@ -102,7 +110,7 @@ an existing file or label.
 - **ADR directory:** create it, with a `README.md` from
   [templates/adr-readme.md](../templates/adr-readme.md).
 
-## 6. Open the PR
+## 7. Open the PR
 
 Commit in the repository's style (`chore: set up github-gsd` for
 Conventional Commits), push the branch, and open the PR, with `Closes #N`

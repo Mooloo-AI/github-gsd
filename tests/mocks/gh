@@ -6,7 +6,7 @@
 #   MOCK_REPO           repository returned by `gh repo view --jq .nameWithOwner`
 #                       (default: acme/widgets)
 #   MOCK_FAIL           a call kind to fail: list, create, update, repo, project,
-#                       fields, or label
+#                       fields, label, or graphql
 #
 # Fixtures in $MOCK_DIR:
 #   pages.json          output of the comment list call (concatenated pages)
@@ -14,6 +14,7 @@
 #   projects.json       output of `gh project list`
 #   fields-<n>.json     output of `gh project field-list <n>`
 #   labels.json         output of `gh label list`
+#   graphql.json        output of `gh api graphql`
 #
 # Writes:
 #   $MOCK_DIR/calls.log      one line per call with its arguments
@@ -70,7 +71,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --method | -X) method=$2; shift 2 ;;
     --input) input=$2; shift 2 ;;
-    --jq | -q) shift 2 ;;
+    --jq | -q | -f | --raw-field | -F | --field) shift 2 ;;
     --paginate) shift ;;
     -*) echo "mock gh: unsupported flag: $1" >&2; exit 64 ;;
     *) endpoint=$1; shift ;;
@@ -78,6 +79,10 @@ while [ $# -gt 0 ]; do
 done
 
 case "$method $endpoint" in
+  *" graphql")
+    fail_if graphql
+    cat "$MOCK_DIR/graphql.json"
+    ;;
   "GET repos/"*"/issues/"*"/comments?per_page=100")
     fail_if list
     cat "$MOCK_DIR/pages.json"
