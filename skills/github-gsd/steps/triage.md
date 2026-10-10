@@ -1,9 +1,8 @@
 # Triage
 
-Bring an issue written by hand, without the github-gsd sections, into the
-workflow. Never edit the reporter's text: add a **Specification** comment
-(`<!-- workflow:spec -->`), which holds the requirements and acceptance
-criteria from then on.
+Bring a hand-written issue into the workflow. Never edit the reporter's
+text: add a **Specification** comment (`<!-- workflow:spec -->`), which holds
+the requirements and acceptance criteria from then on.
 
 An issue needs triage when it is open, has no Specification comment, and its
 body lacks **Requirements** or **Acceptance criteria**. The triage label is

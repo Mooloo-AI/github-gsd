@@ -28,7 +28,7 @@ mentions an issue:
 
 1. **Issue first.** Find the issue, or file it
    ([steps/intake.md](steps/intake.md)) with your remaining questions under
-   **Open questions**.
+   **Open questions**; discuss asks them once the issue exists.
 2. **Branch second** ([steps/start.md](steps/start.md)).
 3. **Then change files**, on the small path or after discuss and plan.
 
@@ -42,21 +42,14 @@ requests. It does not cover merging, deploying, or pushing to the default
 branch. If your environment requires confirmation for GitHub actions, ask
 once, at the start, before any file change; never after the work is done.
 
-Ask your questions in discuss, once the issue exists. Answers you needed in
-chat to scope the issue become decisions in the Context and decisions
-comment.
-
 ### Work started outside the workflow
 
-If files were already changed with no issue (by you or earlier in the
-session):
-
-1. Stop changing files.
-2. File the issue ([steps/intake.md](steps/intake.md)), create its branch,
-   and move the changes onto it.
-3. Write the Context and decisions comment, including the choices already
-   made, and the Implementation plan with the finished tasks ticked.
-4. Verify and ship as usual.
+If files were already changed with no issue, by you or earlier in the
+session: stop changing files, file the issue
+([steps/intake.md](steps/intake.md)), create its branch, and move the changes
+onto it. Then write the Context and decisions comment, including the choices
+already made, and the Implementation plan with the finished tasks ticked, and
+verify and ship as usual.
 
 ## Comment rule
 
@@ -73,8 +66,8 @@ session):
   them afterward if needed.
 
 Always write marked comments with `scripts/issue-comment.sh` (in this skill's
-directory). It finds the comment by its marker across all pages, creates or
-edits it, and prints its URL:
+directory). It finds the comment by its marker, creates or edits it, and prints
+its URL:
 
 ```bash
 issue-comment.sh <issue> context body.md         # create or edit (- reads stdin)
@@ -89,12 +82,9 @@ Exit status 3 means duplicates of a one-per-issue comment: merge them by hand
 ## Configuration
 
 Before acting, read the **github-gsd configuration** section of `AGENTS.md`
-(or `CLAUDE.md`); its format is in [templates/config.md](templates/config.md).
-It sets the Project and its `Status` options, planning fields, labels,
-required checks, PR size limit, branch naming, ADR directory, and milestone
-usage.
-
-Without such a section, use the defaults in
+(or `CLAUDE.md`): the Project and its `Status` options, planning fields,
+labels, required checks, PR size limit, branch naming, ADR directory, and
+milestones. Without one, use the defaults in
 [templates/config.md](templates/config.md), say which you used, and offer to
 add the section. Never guess a Project number: run
 `gh project list --owner <owner>` and ask if it is unclear.
@@ -108,7 +98,7 @@ its file.
 
 | Situation | Step |
 |---|---|
-| An idea or bug report to record ("file an issue: …") | [steps/intake.md](steps/intake.md), then give the user its URL |
+| An idea or bug report to record ("file an issue: …") | [steps/intake.md](steps/intake.md) |
 | A change request ("add …", "fix …") with no issue yet | [steps/intake.md](steps/intake.md), then [steps/start.md](steps/start.md), then continue below |
 | Files already changed, with no issue | [Work started outside the workflow](#work-started-outside-the-workflow) |
 | An issue filed by hand without the standard sections, or "triage #N" | [steps/triage.md](steps/triage.md) |
@@ -130,13 +120,13 @@ the owner or the user asked for only one step.
 
 ## Rules for every step
 
-- **One issue, one branch, one small PR.** A small PR holds one reviewable
-  concern that a reviewer can read in one sitting, and its additions plus
-  deletions stay within the configured PR size limit (default 1500 lines).
-  Plan the size up front ([steps/plan.md](steps/plan.md#3-check-the-size)).
-  Split larger work into a tracking issue with ordered, independently
-  shippable sub-issues, each with its own branch and PR. If scope grows during
-  the work, open a sub-issue instead of silently expanding the issue.
+- **One issue, one branch, one small PR**: one reviewable concern, readable
+  in one sitting, within the configured PR size limit (default 1500 changed
+  lines). Plan the size up front
+  ([steps/plan.md](steps/plan.md#3-check-the-size)) and split larger work
+  into a tracking issue with ordered, independently shippable sub-issues,
+  each with its own branch and PR. If scope grows, open a sub-issue instead of
+  silently expanding the issue.
 - **Record follow-up work as an issue** (or a draft item if unscoped), never
   as a `TODO` in code.
 - **Keep the issue body current.** When requirements or acceptance criteria

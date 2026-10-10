@@ -8,7 +8,7 @@ Turn an idea, request, or bug report into the right GitHub item.
 |---|---|
 | An idea, an ambiguous roadmap candidate, or work without a clear scope or owning repository | A **Project draft item** |
 | Concrete work with a clear scope, an owning repository, and checkable acceptance criteria | An **issue** |
-| Work too large for one small PR (the size rule in `SKILL.md`), in one repository or several, or product-level work made of several issues | A **tracking issue** with sub-issues |
+| Work too large for one small PR, in one repository or several, or product-level work made of several issues | A **tracking issue** with sub-issues |
 
 Search first, and update a matching issue or draft instead of filing a
 duplicate:
