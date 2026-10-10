@@ -2,16 +2,16 @@
 # issue-comment.sh: create, update, or read a marked workflow comment on a GitHub issue.
 #
 # A marked comment carries a hidden marker line such as <!-- workflow:plan -->.
-# The context and plan comments are single comments edited in place. Other
-# markers (research, verification, ...) may have several comments; --append
-# adds another one.
+# The spec, context, and plan comments are single comments edited in place.
+# Other markers (research, verification, ...) may have several comments;
+# --append adds another one.
 #
 # Requires: gh (authenticated) and jq. Works with bash 3.2 or later.
 
 set -euo pipefail
 
 PROG=$(basename "$0")
-SINGLE_MARKERS="context plan"
+SINGLE_MARKERS="spec context plan"
 
 usage() {
   cat <<EOF
@@ -24,14 +24,14 @@ Usage:
 
 Arguments:
   <issue>    Issue number, or an issue URL (https://github.com/OWNER/REPO/issues/N).
-  <marker>   Marker name: context, plan, research, verification, or another
+  <marker>   Marker name: spec, context, plan, research, verification, or another
              lowercase name. The comment is marked with <!-- workflow:<marker> -->.
   <file>     File with the comment body. Omit it or pass - to read from stdin.
 
 Options:
   -R, --repo OWNER/REPO   Repository (default: from the issue URL, \$GH_REPO, or
                           the current directory's repository).
-  --append                Always add a new comment. Not allowed for context or plan.
+  --append                Always add a new comment. Not allowed for spec, context, or plan.
   --get                   Print the body of the marked comment (the newest one
                           for markers that allow several comments).
   --url                   Print the URL of the marked comment (the newest one

@@ -10,7 +10,7 @@ GitHub is the only source of truth:
 |---|---|
 | Priority, status, roadmap | Project fields and `Status`, milestones, tracking issues, sub-issues, blocked-by links |
 | Unscoped ideas | Project draft items |
-| Requirements and acceptance criteria | The issue body |
+| Requirements and acceptance criteria | The issue body, or for an issue filed by hand, an issue comment marked `<!-- workflow:spec -->`, **one per issue, edited in place** |
 | Research (optional) | Issue comment marked `<!-- workflow:research -->` |
 | Context and decisions | Issue comment marked `<!-- workflow:context -->`, **one per issue, edited in place** |
 | Implementation plan | Issue comment marked `<!-- workflow:plan -->`, **one per issue, edited in place**, tasks as checkboxes |
@@ -21,9 +21,10 @@ GitHub is the only source of truth:
 The workflow for one issue:
 
 ```
-intake ─► start ─┬─► small path: change → checks → PR
-                 │
-                 └─► (research) ─► discuss ─► plan ─► execute ─► verify ─► ship ─► PR ─► Done
+intake ─┐
+triage ─┴► start ─┬─► small path: change → checks → PR
+                  │
+                  └─► (research) ─► discuss ─► plan ─► execute ─► verify ─► ship ─► PR ─► Done
 ```
 
 Pull requests stay small: one reviewable concern, within a configurable size limit (default 1500 changed lines, additions plus deletions). The plan step estimates the size before any code is written. Work that is too large becomes a tracking issue whose sub-issues are ordered, independently shippable slices, much like phases in GSD Core. Each slice gets its own issue, branch, and PR.
@@ -31,6 +32,7 @@ Pull requests stay small: one reviewable concern, within a configurable size lim
 | Step | What the agent does |
 |---|---|
 | [Intake](skills/github-gsd/steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or, for work too large for one small PR, a tracking issue with ordered sub-issues linked by blocked-by; sets labels, planning fields, and milestone. |
+| [Triage](skills/github-gsd/steps/triage.md) | For an issue filed by hand: labels it `needs-triage`, then writes a Specification comment with Requirements, Acceptance criteria, and Open questions, leaving the reporter's text unchanged. |
 | [Start](skills/github-gsd/steps/start.md) | Picks a ready, unblocked issue, sets `Status` to In progress, creates `<type>/<issue>-<slug>`. |
 | [Small path](skills/github-gsd/steps/small.md) | For a typo, config, or contained fix: implement, run checks, open the PR. No workflow comments. |
 | [Research](skills/github-gsd/steps/research.md) | Optional. Writes a Research comment with findings, sources, and a recommendation. |
@@ -113,7 +115,7 @@ Optionally copy the GitHub templates into the repository (adjust the path to whe
 cp -R ~/.claude/skills/github-gsd/templates/github/. .github/
 ```
 
-This adds a **Task** and a **Tracking issue** issue form and a pull request template with decision, plan, and verification links.
+This adds **Task**, **Tracking issue**, and **Request** issue forms and a pull request template with decision, plan, and verification links. The Request form is free text for people who don't follow the workflow; it applies the `needs-triage` label so the agent triages it.
 
 ## Use
 
@@ -121,6 +123,7 @@ Ask the agent in plain words, for example:
 
 - "File an issue: export invoices as CSV."
 - "Work on #42."
+- "Which issues need triage?" / "Triage #57."
 - "Plan #42." / "Verify #42." / "Ship it."
 
 In Claude Code you can also invoke it as `/github-gsd work on #42`.
@@ -140,7 +143,7 @@ issue-comment.sh --repo acme/widgets 42 plan plan.md   # another repository
 
 - It finds the marked comment across all comment pages, creates it if missing, and edits it in place otherwise.
 - It refuses to edit when two comments carry the same marker (exit status 3) and lists them.
-- `context` and `plan` are single comments: `--append` is refused for them.
+- `spec`, `context`, and `plan` are single comments: `--append` is refused for them.
 - It adds the marker as the first line when the body does not contain it, and rejects a body that carries a different marker.
 - It prints the comment URL. Run it with `--help` for details.
 

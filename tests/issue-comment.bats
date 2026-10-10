@@ -106,7 +106,10 @@ payload_body() {
   grep -q 'POST' "$MOCK_DIR/calls.log"
 }
 
-@test "--append is refused for the context and plan comments" {
+@test "--append is refused for the spec, context, and plan comments" {
+  run "$SCRIPT" --append 7 spec - <<<"x"
+  [ "$status" -eq 2 ]
+  [[ "$output" == *"edited in place"* ]] || return 1
   run "$SCRIPT" --append 7 context - <<<"x"
   [ "$status" -eq 2 ]
   [[ "$output" == *"edited in place"* ]] || return 1

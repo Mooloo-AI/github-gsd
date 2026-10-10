@@ -12,7 +12,7 @@ files (`PLAN.md`, `STATE.md`, `.planning/`, and so on).
 |---|---|
 | Priority, status, roadmap | The GitHub Project (`Status` and the repository's planning fields), milestones, tracking issues, sub-issues, and blocked-by links |
 | Ideas that are not yet scoped | Project draft items |
-| Requirements and acceptance criteria | The issue body |
+| Requirements and acceptance criteria | The issue body, or the **Specification** comment (`<!-- workflow:spec -->`) for an issue filed by hand |
 | Research (optional) | Issue comment **Research** (`<!-- workflow:research -->`) |
 | Context and decisions | Issue comment **Context and decisions** (`<!-- workflow:context -->`) |
 | Implementation plan | Issue comment **Implementation plan** (`<!-- workflow:plan -->`) |
@@ -67,6 +67,8 @@ session:
   post a "Plan v2" or a correction comment. When the work ships, a
   `Status: ✅ Completed — PR #N` line on the plan comment replaces a separate
   summary.
+- **Specification**: exactly one per issue filed by hand, edited in place
+  ([steps/triage.md](steps/triage.md)).
 - **Research** and **Verification**: marked so they are easy to find. Add
   another one when needed, for example a new verification run after a fix.
 - Other discussion comments are free-form.
@@ -122,6 +124,7 @@ that step's file.
 | An idea or bug report to record ("file an issue: …"), with no issue yet | [steps/intake.md](steps/intake.md), then give the user its URL |
 | A request to change the repository ("add …", "fix …"), with no issue yet | [steps/intake.md](steps/intake.md), then [steps/start.md](steps/start.md), then continue below |
 | Files already changed, with no issue | [Work started outside the workflow](#work-started-outside-the-workflow) |
+| An issue filed by hand without the standard sections, or "triage #N" | [steps/triage.md](steps/triage.md) |
 | "Work on #N" and the issue is not in progress | [steps/start.md](steps/start.md), then continue below |
 | Small issue: typo, config, contained fix with an obvious solution | [steps/small.md](steps/small.md) |
 | Unfamiliar API, provider, or technical options, and no Research comment | [steps/research.md](steps/research.md) |
@@ -157,7 +160,9 @@ for only one step.
 - **Record follow-up work as an issue** (or a draft item if it is not scoped),
   never as a `TODO` comment in code.
 - **Keep the issue body current.** When requirements or acceptance criteria
-  change, edit the body; do not leave the change only in a comment.
+  change, edit the body; do not leave the change only in a comment. For an
+  issue with a Specification comment, "the issue body" in every step means
+  that comment: read and edit it instead, and never edit the reporter's text.
 - **Project updates use plain `gh` commands.** Look up IDs, do not hard-code
   them; see [steps/start.md](steps/start.md) for the commands.
 - **Commits** follow the repository's commit convention (Conventional Commits

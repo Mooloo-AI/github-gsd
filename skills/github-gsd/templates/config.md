@@ -14,6 +14,7 @@ The values shown are the defaults.
 - **Planning fields:** none
 - **Type labels:** `bug`, `enhancement`, `documentation`, `tracking`
 - **Area labels:** none
+- **Triage label:** `needs-triage`
 - **Milestones:** releases; assign every issue that belongs to one
 - **Branch naming:** `<type>/<issue>-<slug>`, where type is the Conventional Commits type
 - **Commit messages:** Conventional Commits with a `Refs #<issue>` footer
@@ -34,6 +35,7 @@ The values shown are the defaults.
 | Planning fields | Fields to set at intake, for example `Priority` and `Effort` as Project fields or organization issue fields, and how to set them. A free-form description, including the command to use, is fine. |
 | Type labels | Labels for the kind of work. `tracking` marks tracking issues. |
 | Area labels | Labels for the product, component, or team, for example `area: api`. Each issue gets one. |
+| Triage label | Marks issues filed by hand without the standard sections, until the agent writes their Specification comment. The Request issue form applies it; change the form's `labels` too if you rename it. |
 | Milestones | How milestones are used, and whether there is a tracking issue per milestone. |
 | Branch naming | Pattern for work branches. |
 | Commit messages | Commit convention. |
