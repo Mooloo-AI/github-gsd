@@ -115,6 +115,40 @@ discover() {
   [ "$(jq -c '[.projects[] | select(.linked) | .number]' <<<"$output")" = '[4]' ]
 }
 
+@test "a user-owned repository has no issue fields" {
+  discover
+  [ "$status" -eq 0 ]
+  [ "$(jq -r .owner_type <<<"$output")" = "User" ]
+  [ "$(jq -c .issue_fields <<<"$output")" = "null" ]
+  ! grep -q graphql "$MOCK_DIR/calls.log" || return 1
+}
+
+@test "reports an organization's issue fields" {
+  jq '.isInOrganization = true' "$MOCK_DIR/repo.json" >"$MOCK_DIR/repo2.json"
+  mv "$MOCK_DIR/repo2.json" "$MOCK_DIR/repo.json"
+  cat >"$MOCK_DIR/graphql.json" <<'EOF'
+{"data": {"organization": {"issueFields": {"nodes": [
+  {"name": "Priority", "dataType": "SINGLE_SELECT", "options": [{"name": "High"}, {"name": "Low"}]},
+  {"name": "Target date", "dataType": "DATE"},
+  {}
+]}}}}
+EOF
+  discover
+  [ "$status" -eq 0 ]
+  [ "$(jq -r .owner_type <<<"$output")" = "Organization" ]
+  [ "$(jq -c .issue_fields <<<"$output")" = '[{"name":"Priority","type":"SINGLE_SELECT","options":["High","Low"]},{"name":"Target date","type":"DATE","options":[]}]' ]
+  grep -q '^api graphql -f owner=acme' "$MOCK_DIR/calls.log"
+}
+
+@test "when an organization's issue fields cannot be read, issue_fields is null" {
+  jq '.isInOrganization = true' "$MOCK_DIR/repo.json" >"$MOCK_DIR/repo2.json"
+  mv "$MOCK_DIR/repo2.json" "$MOCK_DIR/repo.json"
+  MOCK_FAIL=graphql discover
+  [ "$status" -eq 0 ]
+  [ "$(jq -c .issue_fields <<<"$output")" = "null" ]
+  [[ "$stderr" == *"cannot read the issue fields of acme"* ]] || return 1
+}
+
 @test "makes only read calls" {
   discover
   [ "$status" -eq 0 ]

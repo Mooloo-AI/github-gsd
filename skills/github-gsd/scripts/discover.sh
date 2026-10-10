@@ -23,6 +23,7 @@ one JSON object to stdout and changes nothing:
 
   repository       "OWNER/REPO"
   owner            "OWNER"
+  owner_type       "Organization" or "User"
   default_branch   "main"
   agent_files      [{path, has_config}] for AGENTS.md and CLAUDE.md, when present;
                    has_config is true when the file has a
@@ -30,6 +31,9 @@ one JSON object to stdout and changes nothing:
   projects         [{number, title, url, linked, single_select_fields: [{name, options}]}]
                    for the owner's open Projects; linked is true for Projects
                    linked to the repository. null when they cannot be read.
+  issue_fields     [{name, type, options}] for an organization's issue fields
+                   (type is SINGLE_SELECT, DATE, ...); null for a user, or when
+                   they cannot be read
   labels           [{name, description}], or null when they cannot be read
   milestones       [{title, due_on}] for open milestones
   templates        {issue_forms: [path], pr_template: path or null}
@@ -42,7 +46,7 @@ one JSON object to stdout and changes nothing:
   adr_directory    path of an existing ADR directory, or null
   codebase_docs    {directory, files} for docs/codebase/, or null
 
-When the Projects or labels cannot be read, the key is null and a hint goes to
+When the Projects, issue fields, or labels cannot be read, the key is null and a hint goes to
 stderr; the exit status is still 0.
 
 Exit status: 0 success, 1 error, 2 usage error.
@@ -89,7 +93,7 @@ lines() {
 }
 
 # GitHub: the repository, its default branch, linked Projects, open milestones.
-gh repo view --json nameWithOwner,owner,defaultBranchRef,projectsV2,milestones \
+gh repo view --json nameWithOwner,owner,isInOrganization,defaultBranchRef,projectsV2,milestones \
   >"$tmpdir/repo.json" || die "cannot read the GitHub repository of this checkout"
 owner=$(jq -r .owner.login "$tmpdir/repo.json")
 
@@ -116,6 +120,25 @@ if gh project list --owner "$owner" --format json --limit 30 >"$tmpdir/project-l
 else
   warn "cannot list the Projects of $owner; to read Projects, run: gh auth refresh -s project"
   echo null >"$tmpdir/projects.json"
+fi
+
+# Organization issue fields, for planning fields such as Priority and Effort.
+# shellcheck disable=SC2016 # $owner is a GraphQL variable.
+issue_fields_query='query($owner: String!) { organization(login: $owner) { issueFields(first: 100) { nodes {
+  ... on IssueFieldSingleSelect { name dataType options { name } }
+  ... on IssueFieldMultiSelect { name dataType options { name } }
+  ... on IssueFieldText { name dataType }
+  ... on IssueFieldNumber { name dataType }
+  ... on IssueFieldDate { name dataType } } } } }'
+echo null >"$tmpdir/issue-fields.json"
+if [ "$(jq -r .isInOrganization "$tmpdir/repo.json")" = true ]; then
+  if gh api graphql -f owner="$owner" -f query="$issue_fields_query" >"$tmpdir/issue-fields.raw.json"; then
+    jq '[ .data.organization.issueFields.nodes[] | select(.name)
+          | { name, type: .dataType, options: [ (.options // [])[].name ] } ]' \
+      "$tmpdir/issue-fields.raw.json" >"$tmpdir/issue-fields.json"
+  else
+    warn "cannot read the issue fields of $owner"
+  fi
 fi
 
 if gh label list --json name,description --limit 500 >"$tmpdir/labels.json"; then
@@ -242,6 +265,7 @@ jq -n \
   --slurpfile repo "$tmpdir/repo.json" \
   --slurpfile projects "$tmpdir/projects.json" \
   --slurpfile labels "$tmpdir/labels.out.json" \
+  --slurpfile issue_fields "$tmpdir/issue-fields.json" \
   --argjson agent_files "$(jq -s . "$tmpdir/agent-files.ndjson")" \
   --argjson issue_forms "$(lines "$tmpdir/issue-forms.txt")" \
   --arg pr_template "$pr_template" \
@@ -253,9 +277,11 @@ jq -n \
   '$repo[0] as $r
    | { repository: $r.nameWithOwner,
        owner: $r.owner.login,
+       owner_type: (if $r.isInOrganization then "Organization" else "User" end),
        default_branch: $r.defaultBranchRef.name,
        agent_files: $agent_files,
        projects: $projects[0],
+       issue_fields: $issue_fields[0],
        labels: $labels[0],
        milestones: [ ($r.milestones // [])[] | { title, due_on: (.dueOn // null) } ],
        templates: { issue_forms: $issue_forms,

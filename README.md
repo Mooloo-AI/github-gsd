@@ -160,13 +160,13 @@ issue-comment.sh --repo acme/widgets 42 plan plan.md   # another repository
 
 ## The discovery helper
 
-[`discover.sh`](skills/github-gsd/scripts/discover.sh) prints a repository's settings as one JSON object, so the configuration can be built from what the repository actually has: Projects and their single-select fields, labels, milestones, issue forms and PR template, candidate checks from CI workflows and build files, the commit style, the ADR directory, and codebase docs. Run it inside a checkout; it changes nothing.
+[`discover.sh`](skills/github-gsd/scripts/discover.sh) prints a repository's settings as one JSON object, so the configuration can be built from what the repository actually has: Projects and their single-select fields, organization issue fields, labels, milestones, issue forms and PR template, candidate checks from CI workflows and build files, the commit style, the ADR directory, and codebase docs. Run it inside a checkout; it changes nothing.
 
 ```bash
 discover.sh | jq '.projects'
 ```
 
-If the Projects or labels cannot be read (for example, without the `project` scope), that key is `null` and a hint goes to stderr. Run it with `--help` for the full output format.
+If the Projects, issue fields, or labels cannot be read (for example, without the `project` scope), that key is `null` and a hint goes to stderr. Run it with `--help` for the full output format.
 
 ## Develop
 
