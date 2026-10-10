@@ -109,6 +109,9 @@ an existing file or label.
   `gh label create "<name>" --color <hex> --description "<text>"`.
 - **ADR directory:** create it, with a `README.md` from
   [templates/adr-readme.md](../templates/adr-readme.md).
+- **Open issues:** when there is a Project, put the open issues that are not
+  on it yet on it with a `Status`: follow [init-issues.md](init-issues.md).
+  It shows the owner the plan before anything changes.
 
 ## 7. Open the PR
 
