@@ -158,6 +158,13 @@ discover() {
   [ "$(jq -c .agent_files <<<"$output")" = '[{"path":"AGENTS.md","has_config":true},{"path":"CLAUDE.md","has_config":false}]' ]
 }
 
+@test "finds the configuration section under a heading of another level" {
+  printf '# Agents\n\n## Task tracking\n\n### github-gsd configuration\n\n- **Project:** none\n' >AGENTS.md
+  discover
+  [ "$status" -eq 0 ]
+  [ "$(jq -c .agent_files <<<"$output")" = '[{"path":"AGENTS.md","has_config":true}]' ]
+}
+
 @test "reports issue forms, without the chooser config, and the PR template" {
   mkdir -p .github/ISSUE_TEMPLATE
   touch .github/ISSUE_TEMPLATE/bug.yml .github/ISSUE_TEMPLATE/config.yml \
