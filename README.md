@@ -103,7 +103,7 @@ The recommended way is to ask the agent: "Set up github-gsd here." The [init ste
 - asks you once about what it can't settle, such as which Project to use;
 - writes a **github-gsd configuration** section to `AGENTS.md` (or `CLAUDE.md`) and opens a PR. If the section already exists, init updates it in place.
 
-Init also offers optional setup: creating a Project when none fits, copying the GitHub templates below, creating missing labels, creating the ADR directory, and bringing existing open issues onto the Project. It does each one only if you agree.
+Init also offers optional setup: creating a Project when none fits, copying the GitHub templates below, creating missing labels, creating the ADR directory, writing codebase docs (a map of the code in `docs/codebase/` that discuss and plan read), and bringing existing open issues onto the Project. It does each one only if you agree.
 
 To write the section by hand instead, include the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, PR size limit, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
 

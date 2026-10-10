@@ -25,6 +25,7 @@ The values shown are the defaults.
 - **PR size limit:** 1500 changed lines (additions + deletions)
 - **Workflow checks:** none
 - **ADR directory:** `docs/adr/`
+- **Codebase docs:** `docs/codebase/` if present, otherwise none
 - **PR template:** `.github/pull_request_template.md` if present
 ```
 
@@ -46,6 +47,7 @@ The values shown are the defaults.
 | PR size limit | The most lines (additions plus deletions) one pull request may change, against the default branch. Lockfiles and generated files do not count. Planned in the plan step and checked in verify; work that is larger is split into sub-issues. |
 | Workflow checks | Extra checks for some kinds of change, for example `actionlint` for workflow files or a deployment dry run for infrastructure changes. |
 | ADR directory | Where Architecture Decision Records live. |
+| Codebase docs | The directory with the map of the code (stack, architecture, structure, conventions, testing, integrations, concerns). Discuss and plan read it; a change that makes a doc wrong updates it. The init step can write it. |
 | PR template | The pull request template to fill in. |
 
 ## Example

@@ -8,7 +8,8 @@ acceptance criteria within the decisions.
 - Read the issue body, the Context and decisions comment
   (`issue-comment.sh --get <N> context`), and any Research comment.
 - Read the code you will change and its tests, and find the patterns to
-  follow.
+  follow. The configured codebase docs (structure, conventions, testing)
+  point to them.
 - Start from an existing plan comment, if any:
   `issue-comment.sh --get <N> plan`.
 
@@ -24,7 +25,8 @@ Use [templates/plan.md](../templates/plan.md):
   task and add up, leaving out lockfiles and generated files.
 - **Tasks** as ordered checkboxes. Each is one reviewable step that leaves
   the code working, names its files or modules, and ends with how it is
-  checked. Migrations, tests, and docs are tasks, not afterthoughts.
+  checked. Migrations, tests, and docs are tasks, not afterthoughts,
+  including a codebase doc the change makes wrong.
 - **Verification:** the required checks and how each acceptance criterion
   will be checked (test, command, or browser check).
 - **Risks:** what could go wrong and how it is contained (rollback, feature
