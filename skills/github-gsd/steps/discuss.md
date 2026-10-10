@@ -7,8 +7,8 @@ decisions** comment, the single source for what was decided.
 
 - Read the issue body, all comments (including any Research comment), linked
   issues and PRs, and the parent tracking issue.
-- Read the code, docs, and ADRs the work touches, and note the files and
-  modules.
+- Read the configured codebase docs, if any, then the code, docs, and ADRs
+  the work touches, and note the files and modules.
 - Start from an existing Context and decisions comment, if any:
   `issue-comment.sh --get <N> context`.
 

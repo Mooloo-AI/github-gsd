@@ -49,6 +49,7 @@ Build each setting from the output:
 | Required checks | The `checks` that test, lint, type-check, or build, preferring those CI runs and aggregate scripts (`test`, not `test:watch`). Leave out setup, dev, and deploy commands. If none fit, or there are variants per target or environment (`build:staging`, `build:prod`), ask |
 | Workflow checks | `checks` that apply only to some changes. When the repository has workflows, recommend `actionlint` for workflow changes. Otherwise `none` |
 | ADR directory | `adr_directory`, otherwise the default `docs/adr/` |
+| Codebase docs | `codebase_docs.directory`, otherwise `none` (or `docs/codebase/` once created in step 6) |
 | PR template | `templates.pr_template`, otherwise this skill's `templates/github/pull_request_template.md` |
 
 Write every line, including those that match the defaults, so the section is
@@ -109,6 +110,10 @@ an existing file or label.
   `gh label create "<name>" --color <hex> --description "<text>"`.
 - **ADR directory:** create it, with a `README.md` from
   [templates/adr-readme.md](../templates/adr-readme.md).
+- **Codebase docs:** when `codebase_docs` is `null`, recommend a map of the
+  code in `docs/codebase/` (stack, architecture, structure, conventions,
+  testing, integrations, concerns); when it exists, offer to update the stale
+  docs. Follow [init-codebase.md](init-codebase.md).
 - **Open issues:** when there is a Project, put the open issues that are not
   on it yet on it with a `Status`: follow [init-issues.md](init-issues.md).
   It shows the owner the plan before anything changes.
