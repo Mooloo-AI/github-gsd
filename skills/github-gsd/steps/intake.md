@@ -8,7 +8,7 @@ Turn an idea, request, or bug report into the right GitHub item.
 |---|---|
 | An idea, an ambiguous roadmap candidate, unscoped product work, or work without a clear owning repository | A **Project draft item** |
 | Concrete work with a clear scope, an owning repository, and checkable acceptance criteria | An **issue** |
-| Product-level or cross-repository work made of several issues | A **tracking issue** with sub-issues |
+| Work too large for one small PR (see the size rule in `SKILL.md`), whether it stays in one repository or spans several, or product-level work made of several issues | A **tracking issue** with sub-issues |
 
 Search first so you do not file a duplicate:
 
@@ -63,11 +63,24 @@ Then:
 
 Create the parent with the type label `tracking` and a body from
 [templates/tracking-issue.md](../templates/tracking-issue.md): the goal, the
-planned children, and what is out of scope. Create each child as in 2b with
-`--parent <tracking-issue>`, or attach an existing issue:
+planned children, and what is out of scope.
+
+Split the work into ordered slices. Each slice:
+
+- delivers a working, verifiable increment on its own, so it can ship even if
+  later slices never do;
+- fits in one small PR;
+- has its own acceptance criteria and runs its own discuss → plan → execute →
+  verify → ship cycle.
+
+Create each child as in 2b with `--parent <tracking-issue>`, or attach an
+existing issue. When a slice depends on an earlier one, link it with
+blocked-by so the order is visible and [start.md](start.md) picks them in
+order:
 
 ```bash
 gh issue edit <child> --parent <tracking-issue>
+gh issue edit <child> --add-blocked-by <earlier-child>
 ```
 
 Close the tracking issue when its last sub-issue closes. If it belongs to a

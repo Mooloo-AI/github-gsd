@@ -26,16 +26,18 @@ intake ─► start ─┬─► small path: change → checks → PR
                  └─► (research) ─► discuss ─► plan ─► execute ─► verify ─► ship ─► PR ─► Done
 ```
 
+Pull requests stay small: one reviewable concern, within a configurable size limit (default 1500 changed lines, additions plus deletions). The plan step estimates the size before any code is written. Work that is too large becomes a tracking issue whose sub-issues are ordered, independently shippable slices, much like phases in GSD Core. Each slice gets its own issue, branch, and PR.
+
 | Step | What the agent does |
 |---|---|
-| [Intake](skills/github-gsd/steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or a tracking issue with sub-issues; sets labels, planning fields, and milestone. |
+| [Intake](skills/github-gsd/steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or, for work too large for one small PR, a tracking issue with ordered sub-issues linked by blocked-by; sets labels, planning fields, and milestone. |
 | [Start](skills/github-gsd/steps/start.md) | Picks a ready, unblocked issue, sets `Status` to In progress, creates `<type>/<issue>-<slug>`. |
 | [Small path](skills/github-gsd/steps/small.md) | For a typo, config, or contained fix: implement, run checks, open the PR. No workflow comments. |
 | [Research](skills/github-gsd/steps/research.md) | Optional. Writes a Research comment with findings, sources, and a recommendation. |
 | [Discuss](skills/github-gsd/steps/discuss.md) | Settles open questions with the owner and writes the Context and decisions comment (D-01, D-02, …). Deferred items become new issues. |
-| [Plan](skills/github-gsd/steps/plan.md) | Writes the Implementation plan comment: tasks, verification, risks. Adds an ADR when a decision has lasting impact. |
+| [Plan](skills/github-gsd/steps/plan.md) | Writes the Implementation plan comment: estimated size, tasks, verification, risks. Splits an oversized issue into sub-issues before posting. Adds an ADR when a decision has lasting impact. |
 | [Execute](skills/github-gsd/steps/execute.md) | Commits with `Refs #N`, ticks plan tasks in place, and opens a sub-issue when scope grows. |
-| [Verify](skills/github-gsd/steps/verify.md) | Runs the required checks, checks each acceptance criterion, and writes a Verification comment. |
+| [Verify](skills/github-gsd/steps/verify.md) | Runs the required checks and the PR size check, checks each acceptance criterion, and writes a Verification comment. |
 | [Ship](skills/github-gsd/steps/ship.md) | Opens the PR with `Closes #N` and links to the comments, sets `Status` to In review. |
 
 The agent writes the workflow comments directly, with no approval step; the owner edits them afterward if needed. The entry point for the agent is [SKILL.md](skills/github-gsd/SKILL.md).
@@ -91,7 +93,7 @@ npx skills add Mooloo-AI/github-gsd -g -a claude-code -y
 
 ## Configure
 
-Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
+Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, PR size limit, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
 
 ```markdown
 ## github-gsd configuration

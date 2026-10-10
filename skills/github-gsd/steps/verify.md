@@ -8,6 +8,17 @@ Prove the issue is done: the checks pass and every acceptance criterion holds.
 - Run the **workflow checks** that apply to the change (for example
   `actionlint` for workflow files, or a deployment dry run for infrastructure
   changes). Never run a real deployment unless the user asked for it.
+- Check the **PR size** against the configured limit (default 1500 changed
+  lines):
+
+  ```bash
+  git diff --numstat origin/<default-branch>...HEAD
+  ```
+
+  Add up the first two columns, leaving out lockfiles and generated files
+  (name any you left out). If the total is over the limit, the check fails:
+  move the part that can ship later to a sub-issue (back to
+  [plan.md](plan.md#3-check-the-size)) instead of opening an oversized PR.
 - Record each command and its result. A check you could not run is reported
   as not run, with the reason; never as passed.
 
