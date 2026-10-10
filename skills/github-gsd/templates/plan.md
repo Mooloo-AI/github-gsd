@@ -7,6 +7,8 @@ _Edited in place. Last updated: <YYYY-MM-DD>._
 
 **Approach:** <Two to five sentences. Reference decisions by number (D-01).>
 
+**Size:** about <N> changed lines (limit <limit>)
+
 **Tasks**
 
 - [ ] 1. <Task> — `<files or modules>`. Check: <test or command>.

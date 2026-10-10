@@ -40,6 +40,10 @@ only local.
   need): do not expand the issue silently. Open a sub-issue
   (`gh issue create … --parent <N>`) or a separate issue, link it from the
   plan, and leave it out of this branch unless it blocks the work.
+- **The work outgrows one small PR** (the size rule in `SKILL.md`): stop,
+  finish the slice that already works, and move the rest to sub-issues as in
+  [plan.md](plan.md#3-check-the-size), shrinking this issue's plan and
+  acceptance criteria to match.
 - **You are blocked** (missing access, failing infrastructure, an owner
   decision): say so to the user and record the blocker in an issue comment.
 
