@@ -69,6 +69,10 @@ git fetch origin
 git switch -c chore/setup-github-gsd origin/<default_branch>
 ```
 
+If the repository already has a section, updating it is a change like any
+other: file an issue ([intake.md](intake.md)) and use its branch
+([start.md](start.md)) instead.
+
 Pick the file: the one in `agent_files` with `has_config: true`; otherwise
 `AGENTS.md` if it exists, then `CLAUDE.md`; otherwise create `AGENTS.md`.
 
@@ -99,7 +103,8 @@ an existing file or label.
 ## 6. Open the PR
 
 Commit in the repository's style (`chore: set up github-gsd` for
-Conventional Commits), push the branch, and open the PR. Never push to the
+Conventional Commits), push the branch, and open the PR (with `Closes #N`
+when there is an issue). Never push to the
 default branch. In the description, list:
 
 - the discovered settings;

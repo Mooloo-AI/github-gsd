@@ -1,6 +1,6 @@
 ---
 name: github-gsd
-description: 'GitHub-only issue workflow: discuss → plan → execute → verify → ship, with no local planning files. Use to file, triage, plan, implement, or ship a GitHub issue ("work on #12", "turn this idea into an issue", "ship it"), and for any change request in a repository whose AGENTS.md or CLAUDE.md has a "github-gsd configuration" section, even when no issue is mentioned; load it before editing any file. Do not use for repositories that keep plans in local files such as .planning/.'
+description: 'GitHub-only issue workflow: discuss → plan → execute → verify → ship, with no local planning files. Use to set up github-gsd in a repository ("set up github-gsd here") and to file, triage, plan, implement, or ship a GitHub issue ("work on #12", "turn this idea into an issue", "ship it"), and for any change request in a repository whose AGENTS.md or CLAUDE.md has a "github-gsd configuration" section, even when no issue is mentioned; load it before editing any file. Do not use for repositories that keep plans in local files such as .planning/.'
 ---
 
 # github-gsd
@@ -82,10 +82,11 @@ Exit status 3 means duplicates of a one-per-issue comment: merge them by hand
 ## Configuration
 
 Before acting, read the **github-gsd configuration** section of `AGENTS.md`
-(or `CLAUDE.md`). Without one, use the defaults in
-[templates/config.md](templates/config.md), say which you used, and offer to
-add the section. Never guess a Project number: run
-`gh project list --owner <owner>` and ask if it is unclear.
+(or `CLAUDE.md`). Without one, offer to set it up with
+[steps/init.md](steps/init.md); if the user declines, use the defaults in
+[templates/config.md](templates/config.md) and say which you used. Never
+guess a Project number: run `gh project list --owner <owner>` and ask if it
+is unclear.
 
 Repository instructions win over this skill when they conflict.
 
@@ -96,6 +97,7 @@ its file.
 
 | Situation | Step |
 |---|---|
+| Set up, initialize, or onboard github-gsd in a repository ("set up github-gsd here", "init") | [steps/init.md](steps/init.md) |
 | An idea or bug report to record ("file an issue: …") | [steps/intake.md](steps/intake.md) |
 | A change request ("add …", "fix …") with no issue yet | [steps/intake.md](steps/intake.md), then [steps/start.md](steps/start.md), then continue below |
 | Files already changed, with no issue | [Work started outside the workflow](#work-started-outside-the-workflow) |

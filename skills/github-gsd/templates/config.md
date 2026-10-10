@@ -1,7 +1,10 @@
 # github-gsd configuration
 
-Copy this section into the repository's `AGENTS.md` (or `CLAUDE.md`) and edit
-the values. Leave a line out to use its default. Keep secrets out of it.
+The init step ([steps/init.md](../steps/init.md)) writes this section from
+the repository's real settings; ask the agent to "set up github-gsd here". To
+write it by hand, copy it into the repository's `AGENTS.md` (or `CLAUDE.md`)
+and edit the values. Leave a line out to use its default. Keep secrets out of
+it.
 
 The values shown are the defaults.
 
