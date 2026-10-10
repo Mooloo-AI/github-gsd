@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
-# Mock gh for the issue-comment.sh tests.
+# Mock gh for the issue-comment.sh and discover.sh tests.
 #
 # Environment:
 #   MOCK_DIR            directory for logs and fixtures (required)
-#   MOCK_REPO           repository returned by `gh repo view` (default: acme/widgets)
-#   $MOCK_DIR/pages.json  output of the comment list call (concatenated pages)
-#   MOCK_FAIL           a call kind to fail: list, create, update, or repo
+#   MOCK_REPO           repository returned by `gh repo view --jq .nameWithOwner`
+#                       (default: acme/widgets)
+#   MOCK_FAIL           a call kind to fail: list, create, update, repo, project,
+#                       fields, or label
+#
+# Fixtures in $MOCK_DIR:
+#   pages.json          output of the comment list call (concatenated pages)
+#   repo.json           output of `gh repo view --json ...` without --jq
+#   projects.json       output of `gh project list`
+#   fields-<n>.json     output of `gh project field-list <n>`
+#   labels.json         output of `gh label list`
 #
 # Writes:
 #   $MOCK_DIR/calls.log      one line per call with its arguments
@@ -24,7 +32,31 @@ fail_if() {
 
 if [ "${1:-}" = "repo" ] && [ "${2:-}" = "view" ]; then
   fail_if repo
-  echo "${MOCK_REPO:-acme/widgets}"
+  case "$*" in
+    *"--jq .nameWithOwner"*) echo "${MOCK_REPO:-acme/widgets}" ;;
+    *) cat "$MOCK_DIR/repo.json" ;;
+  esac
+  exit 0
+fi
+
+if [ "${1:-}" = "project" ] && [ "${2:-}" = "list" ]; then
+  if [ "${MOCK_FAIL:-}" = "project" ]; then
+    echo "error: your authentication token is missing required scopes [read:project]" >&2
+    exit 1
+  fi
+  cat "$MOCK_DIR/projects.json"
+  exit 0
+fi
+
+if [ "${1:-}" = "project" ] && [ "${2:-}" = "field-list" ]; then
+  fail_if fields
+  cat "$MOCK_DIR/fields-$3.json"
+  exit 0
+fi
+
+if [ "${1:-}" = "label" ] && [ "${2:-}" = "list" ]; then
+  fail_if label
+  cat "$MOCK_DIR/labels.json"
   exit 0
 fi
 
