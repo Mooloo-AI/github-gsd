@@ -31,6 +31,7 @@ Pull requests stay small: one reviewable concern, within a configurable size lim
 
 | Step | What the agent does |
 |---|---|
+| [Init](skills/github-gsd/steps/init.md) | Once per repository: discovers its settings with `discover.sh`, writes the github-gsd configuration section, offers optional setup (templates, labels, ADR directory), and opens a PR. |
 | [Intake](skills/github-gsd/steps/intake.md) | Files a draft item, an issue (Requirements, Acceptance criteria, Open questions), or, for work too large for one small PR, a tracking issue with ordered sub-issues linked by blocked-by; sets labels, planning fields, and milestone. |
 | [Triage](skills/github-gsd/steps/triage.md) | For an issue filed by hand: labels it `needs-triage`, then writes a Specification comment with Requirements, Acceptance criteria, and Open questions, leaving the reporter's text unchanged. |
 | [Start](skills/github-gsd/steps/start.md) | Picks a ready, unblocked issue, sets `Status` to In progress, creates `<type>/<issue>-<slug>`. |
@@ -95,7 +96,16 @@ npx skills add Mooloo-AI/github-gsd -g -a claude-code -y
 
 ## Configure
 
-Add a **github-gsd configuration** section to the repository's `AGENTS.md` (or `CLAUDE.md`) with the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, PR size limit, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
+The recommended way is to ask the agent: "Set up github-gsd here." The [init step](skills/github-gsd/steps/init.md):
+
+- checks that `gh` is authenticated and `jq` is installed;
+- runs [`discover.sh`](#the-discovery-helper) to read the repository's Projects, `Status` options, labels, milestones, CI checks, and commit style;
+- asks you once about what it can't settle, such as which Project to use;
+- writes a **github-gsd configuration** section to `AGENTS.md` (or `CLAUDE.md`) and opens a PR. If the section already exists, init updates it in place.
+
+Init also offers optional setup: copying the GitHub templates below, creating missing labels, and creating the ADR directory. It does each one only if you agree.
+
+To write the section by hand instead, include the workflow rule, the Project owner and number, the `Status` option names, labels, planning fields, required checks, PR size limit, and branch naming. The format and defaults are in [templates/config.md](skills/github-gsd/templates/config.md). For example:
 
 ```markdown
 ## github-gsd configuration
@@ -121,6 +131,7 @@ This adds **Task**, **Tracking issue**, and **Request** issue forms and a pull r
 
 Ask the agent in plain words, for example:
 
+- "Set up github-gsd here."
 - "File an issue: export invoices as CSV."
 - "Work on #42."
 - "Which issues need triage?" / "Triage #57."
