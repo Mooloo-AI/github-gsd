@@ -39,15 +39,15 @@ Build each setting from the output:
 | Workflow | The standard line in [templates/config.md](../templates/config.md), always |
 | Project | The one Project with `linked: true`. With several linked, or none linked but some open, ask; never guess. With no Project, `none` |
 | Status field | The chosen Project's `Status` single-select field. Map its options in order to not ready, ready, in progress, in review, done; ask if the count or meaning is unclear |
-| Planning fields | The Project's other single-select fields (for example `Priority`, `Effort`) with their options, set with `gh project item-edit`; otherwise `none` |
+| Planning fields | The Project's other single-select fields that have options (for example `Priority`, `Effort`), set with `gh project item-edit`. Discovery does not see organization issue fields: if a field has no options, or the owner may use issue fields, ask how planning fields are set. Otherwise `none` |
 | Type labels | `labels` that name a kind of work (`bug`, `enhancement`, `documentation`, `tracking`, …) |
-| Area labels | `labels` with an area prefix (`area:`, `component:`, `team:`, …); otherwise `none` |
+| Area labels | `labels` with an area prefix (`area:`, `component:`, `product:`, `team:`, …); otherwise `none` |
 | Triage label | An existing label for unscoped reports, otherwise `needs-triage` |
 | Milestones | `none` when `milestones` is empty; otherwise how they are used, asking if unclear |
 | Branch naming, PR size limit | The defaults, unless the owner says otherwise |
 | Commit messages | The default when `commits.style` is `conventional`; otherwise describe the style in `git log` |
-| Required checks | The `checks` that test, lint, type-check, or build. Leave out setup steps (installs, `mkdir`, version prints). If none fit, ask |
-| Workflow checks | `checks` that apply only to some changes, for example a workflow linter; otherwise `none` |
+| Required checks | The `checks` that test, lint, type-check, or build, preferring those CI runs and aggregate scripts (`test`, not `test:watch`). Leave out setup, dev, and deploy commands. If none fit, or there are variants per target or environment (`build:staging`, `build:prod`), ask |
+| Workflow checks | `checks` that apply only to some changes. When the repository has workflows, recommend `actionlint` for workflow changes. Otherwise `none` |
 | ADR directory | `adr_directory`, otherwise the default `docs/adr/` |
 | PR template | `templates.pr_template`, otherwise this skill's `templates/github/pull_request_template.md` |
 
