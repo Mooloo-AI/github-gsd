@@ -103,9 +103,9 @@ an existing file or label.
 ## 6. Open the PR
 
 Commit in the repository's style (`chore: set up github-gsd` for
-Conventional Commits), push the branch, and open the PR (with `Closes #N`
-when there is an issue). Never push to the
-default branch. In the description, list:
+Conventional Commits), push the branch, and open the PR, with `Closes #N`
+when there is an issue. Never push to the default branch. In the
+description, list:
 
 - the discovered settings;
 - each answer the owner gave;
