@@ -58,6 +58,11 @@ Offer one alternative: putting every issue in the first option, for owners
 who move issues to ready by hand
 (`issues=$(jq 'map(.column = "first")' <<<"$issues")`).
 
+Also tell the owner: if the Project's built-in "Auto-add sub-issues to
+project" workflow is on (it is by default), adding a tracking issue also
+adds its sub-issues, closed ones included, and the "Item closed" workflow
+sets those to Done.
+
 ## 4. Apply
 
 Create the triage label if it is missing and some issue needs it, as in
