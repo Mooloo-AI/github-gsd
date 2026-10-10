@@ -26,7 +26,7 @@ one JSON object to stdout and changes nothing:
   default_branch   "main"
   agent_files      [{path, has_config}] for AGENTS.md and CLAUDE.md, when present;
                    has_config is true when the file has a
-                   "## github-gsd configuration" section
+                   "github-gsd configuration" heading at any level
   projects         [{number, title, url, linked, single_select_fields: [{name, options}]}]
                    for the owner's open Projects; linked is true for Projects
                    linked to the repository. null when they cannot be read.
@@ -130,7 +130,7 @@ fi
 for file in AGENTS.md CLAUDE.md; do
   [ -f "$file" ] || continue
   has_config=false
-  if grep -q '^## github-gsd configuration[[:space:]]*$' "$file"; then
+  if grep -qE '^#{1,6} github-gsd configuration[[:space:]]*$' "$file"; then
     has_config=true
   fi
   jq -nc --arg path "$file" --argjson has "$has_config" '{ path: $path, has_config: $has }' \
