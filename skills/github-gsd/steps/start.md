@@ -15,14 +15,14 @@ gh issue view <N> --json title,body,state,labels,milestone,blockedBy,subIssues,p
 
 Before starting, check that:
 
-- the issue is open, scoped (it has Requirements and Acceptance criteria), and
-  in the right repository;
+- the issue is open, scoped (it has Requirements and Acceptance criteria, in
+  its body or its Specification comment), and in the right repository;
 - no open issue blocks it (`blockedBy` is empty or all closed). If one does,
   tell the user and stop, or start the blocker instead if they agree;
 - it is not a tracking issue. For a tracking issue, start one of its
   sub-issues.
 
-If the issue is not scoped, go to [intake.md](intake.md) first.
+If the issue is not scoped, go to [triage.md](triage.md) first.
 
 ## 2. Set Status to In progress
 

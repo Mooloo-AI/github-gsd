@@ -13,8 +13,8 @@ Prove the issue is done: the checks pass and every acceptance criterion holds.
 
 ## 2. Check each acceptance criterion
 
-For each criterion in the issue body, check it directly and record the
-evidence:
+For each criterion in the issue body (or its Specification comment), check
+it directly and record the evidence:
 
 - behavior: a test that covers it, or a command and its output;
 - UI: open it in a browser, use it, and note what you saw (attach a
