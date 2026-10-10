@@ -1,0 +1,11 @@
+name: Request
+description: Describe a problem or an idea in your own words. An agent turns it into a scoped task.
+labels: ["needs-triage"]
+body:
+  - type: textarea
+    id: request
+    attributes:
+      label: What do you need?
+      description: The problem, the idea, or the change, and why it matters. Any format is fine.
+    validations:
+      required: true
