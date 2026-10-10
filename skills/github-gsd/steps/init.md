@@ -78,11 +78,13 @@ Pick the file: the one in `agent_files` with `has_config: true`; otherwise
 
 - **No section yet:** add `## github-gsd configuration` with the lines from
   step 2 at the end of the file.
-- **Section exists:** replace only the lines from its heading up to the next
-  `## ` heading or the end of the file. Keep values that discovery cannot
-  see or confirm (planning field commands, workflow checks, milestone usage,
-  notes on a line). Change a value only when the repository contradicts it,
-  and list each change in the PR.
+- **Section exists** (its heading may be at any level, such as
+  `### github-gsd configuration`): keep its heading, and replace only the
+  lines below it, up to the next heading of the same or a higher level, or
+  the end of the file. Keep values that discovery cannot see or confirm
+  (planning field commands, workflow checks, milestone usage, notes on a
+  line). Change a value only when the repository contradicts it, and list
+  each change in the PR.
 
 Nothing outside the section changes. Check with `git diff`.
 
